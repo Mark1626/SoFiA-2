@@ -810,6 +810,16 @@ PRIVATE void LinkerPar_reallocate_memory(LinkerPar *self)
 /// to assist with the optimisation of the kernel scale. This can be controlled using
 /// the `skellam` parameter. If set to `NULL`, no Skellam array will be generated.
 ///
+/// It is also possible to employ an automatic kernel scaling algorithm which will
+/// iteratively change the kernel scale factor until convergence is achieved. The 
+/// auto-kernel algorithm will start at a low `scale_kernel = 0.1` and will
+/// incrementally increase that value until the absolute value of the median of the
+/// Skellam distribution drops below a user-defined tolerance or the maximum
+/// number of iterations is exceeded. The `scale_kernel` increments will become
+/// smaller as the algorithm approaches the threshold. If the algorithm fails to
+/// converge, the original value of `scale_kernel` will instead be used. Automatic
+/// kernel scaling can be enabled by setting `autokernel` to `true`.
+///
 /// @param self           Object self-reference.
 /// @param rel_par_space  Array of parameters to be used to determine the
 ///                       reliability of detections. These must be integer
@@ -819,7 +829,9 @@ PRIVATE void LinkerPar_reallocate_memory(LinkerPar *self)
 ///                       the density of positive and negative detections in
 ///                       parameter space will be scaled by this factor. If set to 1,
 ///                       the original covariance matrix derived from the distribution
-///                       of negative sources is used. Set 0.0 to use auto-kernel feature.
+///                       of negative sources is used. This parameter must be passed by
+///                       reference and will hold the new kernel scale factor determined
+///                       by the auto-kernel algorithm if enabled.
 /// @param minpix         Minimum number of pixels for a source to be considered reliable.
 /// @param fmin           Value of the `fmin` parameter, where `fmin = sum / sqrt(N)`.
 /// @param rel_cat        Table of pixel coordinates on the sky. All negative detections
@@ -828,21 +840,29 @@ PRIVATE void LinkerPar_reallocate_memory(LinkerPar *self)
 ///                       this feature.
 /// @param skellam        Pointer to an Array of type double to hold the Skellam array.
 ///                       Set NULL to disable.
+/// @param autokernel     If set to `true` then automatic scaling of the kernel will be
+///                       enabled. `scale_kernel` will be used as the fall-back option
+///                       if the auto-kernel algorithm fails to converge.
+/// @param iterations     Maximum number of iterations used by the auto-kernel algorithm.
+///                       If the algorithm does not converge, `scale_kernel` will be used
+///                       instead.
+/// @param tolerance      Skellam parameter tolerance for convergence of the auto-kernel
+///                       algorithm. The algorithm converges when the absolute value of
+///                       the median of the Skellam distribution drops below this value.
 ///
 /// @return Covariance matrix from the negative detections.
-///
-/// @note The auto-kernel algorithm will start at a low `scale_kernel = 0.1` and will
-/// incrementally increase that value until the median of the Skellam distribution drops
-/// below an internally defined threshold or the maximum number of iterations is exceeded.
-/// The `scale_kernel` increments will become smaller as the algorithm approaches the
-/// threshold.
 
-PUBLIC Matrix *LinkerPar_reliability(LinkerPar *self, const Array_siz *rel_par_space, double *scale_kernel, const double fmin, const size_t minpix, const Table *rel_cat, Array_dbl **skellam)
+PUBLIC Matrix *LinkerPar_reliability(LinkerPar *self, const Array_siz *rel_par_space, double *scale_kernel, const double fmin, const size_t minpix, const Table *rel_cat, Array_dbl **skellam, const bool autokernel, const int iterations, const double tolerance)
 {
 	// Sanity checks
 	check_null(self);
 	ensure(self->size, ERR_NO_SRC_FOUND, "No sources left after linking. Cannot proceed.");
-	ensure(skellam != NULL || *scale_kernel != 0.0, ERR_USER_INPUT, "If auto-kernel scaling is enabled skellam must not be NULL.");
+	ensure(skellam != NULL || !autokernel, ERR_USER_INPUT, "With kernel auto-scaling enabled, skellam must not be NULL.");
+	if(*scale_kernel <= 0.0)
+	{
+		warning("Kernel scale factor is non-positive; using default of 0.4 instead.");
+		*scale_kernel = 0.4;
+	}
 	
 	// Dimensionality of parameter space
 	const int dim = Array_siz_get_size(rel_par_space);
@@ -1034,10 +1054,10 @@ PUBLIC Matrix *LinkerPar_reliability(LinkerPar *self, const Array_siz *rel_par_s
 	//       the amplitude to 1 rather than the integral. The normalisation factor 
 	//       does matter for the Skellam parameter, though.
 	
-	// Check if kernel scale factor provided
-	if(*scale_kernel != 0.0)
+	// Check if auto-kernel enabled
+	if(!autokernel)
 	{
-		// Yes -> use fixed kernel scale factor
+		// No -> use fixed kernel scale factor
 		Matrix_mul_scalar(covar, pow(*scale_kernel, 2));  // NOTE: Variance = sigma^2, hence scale_kernel^2 here.
 		
 		// Invert covariance matrix
@@ -1049,20 +1069,17 @@ PUBLIC Matrix *LinkerPar_reliability(LinkerPar *self, const Array_siz *rel_par_s
 	}
 	else
 	{
-		// No -> run auto-kernel by incrementally increasing scale
+		// Yes -> run auto-kernel by incrementally increasing scale
 		message("Using auto-kernel feature.");
 		
-		// TODO(austin): allow these to be set as initial parameters
 		int iter = 0;
-		const int iter_max = 30;
 		double scale = 0.1;
 		double scale_old = 1.0;  // Must be initialised with 1!
-		const double scale_default = 0.4;
-		double skellam_med = 1e5;
-		const double skellam_tol = 0.05;
-		const double d_scale = 0.02;
+		double skellam_med = 1e+5;
+		const double scale_default = *scale_kernel;
+		const double step_size = 0.02;
 		
-		while(iter < iter_max && skellam_med > skellam_tol)
+		while(iter < iterations && skellam_med > tolerance)
 		{
 			// Calculate skellam array
 			Matrix_mul_scalar(covar, pow(scale / scale_old, 2));  // NOTE: Variance = sigma^2, hence scale_kernel^2 here.
@@ -1076,17 +1093,17 @@ PUBLIC Matrix *LinkerPar_reliability(LinkerPar *self, const Array_siz *rel_par_s
 			
 			// Update with larger scale change far from target
 			scale_old = scale;
-			if(skellam_med < 10.0 * skellam_tol) scale += 2.0 * d_scale;
-			else if(skellam_med < 30.0 * skellam_tol) scale +=  5.0 * d_scale;
-			else if(skellam_med < 50.0 * skellam_tol) scale += 10.0 * d_scale;
-			else scale += d_scale;
+			if(skellam_med < 10.0 * tolerance) scale += 2.0 * step_size;
+			else if(skellam_med < 30.0 * tolerance) scale +=  5.0 * step_size;
+			else if(skellam_med < 50.0 * tolerance) scale += 10.0 * step_size;
+			else scale += step_size;
 			
 			++iter;
 			message("  Iter. %*d: kernel = %.3f, median = %.3f", 2, iter, scale_old, skellam_med);
 		}
 		
 		// Check if algorithm converged
-		if(skellam_med <= skellam_tol)
+		if(skellam_med <= tolerance)
 		{
 			*scale_kernel = scale_old;
 			message("Converged to scale_kernel = %.3f after %d iterations.", scale_old, iter);

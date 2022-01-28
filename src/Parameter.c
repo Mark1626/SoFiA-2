@@ -573,6 +573,9 @@ PUBLIC void Parameter_default(Parameter *self)
 	Parameter_set(self, "reliability.scaleKernel"  , "0.4");
 	Parameter_set(self, "reliability.minSNR"       , "3.0");
 	Parameter_set(self, "reliability.minPixels"    , "0");
+	Parameter_set(self, "reliability.autoKernel"   , "false");
+	Parameter_set(self, "reliability.iterations"   , "30");
+	Parameter_set(self, "reliability.tolerance"    , "0.05");
 	Parameter_set(self, "reliability.catalog"      , "");
 	Parameter_set(self, "reliability.plot"         , "true");
 	Parameter_set(self, "reliability.debug"        , "false");

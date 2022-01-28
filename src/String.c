@@ -304,11 +304,11 @@ PUBLIC String *String_set_int(String *self, const char *format, const long int v
 /// Public method for setting a String object to the specified
 /// string from or until the specified delimiting character. The
 /// delimiting character can either be the first from the start or
-/// the last before the end (argument `first`), and either the sub-
-/// string until the delimiter or from the delimiter onward can be
-/// copied (argument `until`). The delimiting character itself will
-/// be excluded in all cases. This method can be used to copy part
-/// of a string as defined by a specific delimiting character.
+/// the last before the end (argument `first`), and either the
+/// sub-string until the delimiter or from the delimiter onward can
+/// be copied (argument `until`). The delimiting character itself
+/// will be excluded in all cases. This method can be used to copy
+/// part of a string as defined by a specific delimiting character.
 ///
 /// @param  self       Object self-reference.
 /// @param  string     C string value to set the String object to.

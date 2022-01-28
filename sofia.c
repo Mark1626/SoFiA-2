@@ -1235,7 +1235,7 @@ int main(int argc, char **argv)
 		// Calculate reliability values
 		double scale_kernel = Parameter_get_flt(par, "reliability.scaleKernel");
 		Array_dbl *skellam = NULL;
-		Matrix *covar = LinkerPar_reliability(lpar, rel_par_space, &scale_kernel, rel_fmin, rel_min_pix, rel_cat, use_rel_plot || scale_kernel == 0 ? &skellam : NULL);
+		Matrix *covar = LinkerPar_reliability(lpar, rel_par_space, &scale_kernel, rel_fmin, rel_min_pix, rel_cat, use_rel_plot || scale_kernel == 0 ? &skellam : NULL, Parameter_get_bool(par, "reliability.autoKernel"), Parameter_get_int(par, "reliability.iterations"), Parameter_get_flt(par, "reliability.tolerance"));
 		
 		// Create plots if requested
 		if(use_rel_plot)

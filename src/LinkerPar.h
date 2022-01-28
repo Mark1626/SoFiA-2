@@ -91,7 +91,7 @@ PUBLIC  void       LinkerPar_get_rel_cat  (const LinkerPar *self, const char *fl
 PUBLIC  void       LinkerPar_print_info   (const LinkerPar *self);
 
 // Reliability filtering
-PUBLIC  Matrix    *LinkerPar_reliability  (LinkerPar *self, const Array_siz *rel_par_space, double *scale_kernel, const double fmin, const size_t minpix, const Table *rel_cat, Array_dbl **skellam);
+PUBLIC  Matrix    *LinkerPar_reliability  (LinkerPar *self, const Array_siz *rel_par_space, double *scale_kernel, const double fmin, const size_t minpix, const Table *rel_cat, Array_dbl **skellam, const bool autokernel, const int iterations, const double tolerance);
 PUBLIC  void       LinkerPar_rel_plots    (const LinkerPar *self, const Array_siz *rel_par_space, const double threshold, const double fmin, const double minSNR, const Matrix *covar, const char *filename, const bool overwrite);
 
 // Private methods
