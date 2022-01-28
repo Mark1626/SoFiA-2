@@ -39,7 +39,7 @@ As an alternative, we provide a `Makefile` for those who prefer to use `make` to
 
 ### Docker containers
 
-We also provide official Docker containers for all stable releases of SoFiA 2. These are available from https://hub.docker.com/r/sofiapipeline/sofia2. However, due to the significant overhead imposed by pre-packaged containers, we strongly advise users to install SoFiA 2 from source, which is straightforward using the instructions above and will use significantly less disc space.
+We also provide official Docker containers for all stable releases of SoFiA 2. These are available from https://hub.docker.com/r/sofiapipeline/sofia2. Note that Docker images can also be run in Singularity (see https://sylabs.io/guides/latest/user-guide/singularity_and_docker.html). However, due to the significant overhead imposed by pre-packaged containers, we strongly advise users to install SoFiA 2 from source, which is straightforward using the instructions above and will use significantly less disc space.
 
 
 ## Documentation
