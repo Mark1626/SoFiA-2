@@ -1,6 +1,7 @@
 # SoFiA 2
 
 [![Docker build latest](https://github.com/axshen/SoFiA-2/actions/workflows/latest-image-build.yml/badge.svg)](https://github.com/axshen/SoFiA-2/actions/workflows/latest-image-build.yml)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 This is version 2 of the HI Source Finding Application (SoFiA), a **source finding pipeline** originally designed to detect and characterise galaxies in 3D extragalctic HI data cubes. SoFiA 2 is a reimplementation of the original SoFiA pipeline in the C programming language and provides most of the functionality of SoFiA 1.x. While some development is still happening, SoFiA 2 is stable and can be used in production mode at this point. Although we strongly recommend switching to SoFiA 2, users will still be able to use **SoFiA 1.x** (https://github.com/SoFiA-Admin/SoFiA) for processing their data.
 
