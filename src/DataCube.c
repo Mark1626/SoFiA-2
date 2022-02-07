@@ -481,6 +481,9 @@ PUBLIC void DataCube_load(DataCube *self, const char *filename, const Array_siz 
 	const size_t y_max = (region != NULL && Array_siz_get(region, 3) < self->axis_size[1] - 1) ? Array_siz_get(region, 3) : self->axis_size[1] - 1;
 	const size_t z_min = (region != NULL && Array_siz_get(region, 4) > 0) ? Array_siz_get(region, 4) : 0;
 	const size_t z_max = (region != NULL && Array_siz_get(region, 5) < self->axis_size[2] - 1) ? Array_siz_get(region, 5) : self->axis_size[2] - 1;
+	
+	ensure(x_min <= x_max && y_min <= y_max && z_min <= z_max, ERR_USER_INPUT, "Invalid data cube region requested.");
+	
 	const size_t region_nx = x_max - x_min + 1;
 	const size_t region_ny = y_max - y_min + 1;
 	const size_t region_nz = z_max - z_min + 1;
