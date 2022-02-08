@@ -5440,12 +5440,12 @@ PUBLIC void DataCube_create_cubelets(const DataCube *self, const DataCube *mask,
 	
 	if(DataCube_cmphd(self, "CTYPE3", "FREQ", 4))
 	{
-		String_set(label_spec, "Frequency");
+		String_set(label_spec, "freq");
 		if(String_size(unit_spec) == 0) String_set(unit_spec,  "Hz");  // FITS default
 	}
 	else if(DataCube_cmphd(self, "CTYPE3", "VRAD", 4) || DataCube_cmphd(self, "CTYPE3", "VOPT", 4) || DataCube_cmphd(self, "CTYPE3", "VELO", 4) || DataCube_cmphd(self, "CTYPE3", "FELO", 4))
 	{
-		String_set(label_spec, "Velocity");
+		String_set(label_spec, "velo");
 		if(String_size(unit_spec) == 0) String_set(unit_spec,  "m/s");  // FITS default
 	}
 	else
@@ -5643,47 +5643,55 @@ PUBLIC void DataCube_create_cubelets(const DataCube *self, const DataCube *mask,
 		fprintf(fp, "# Integrated source spectrum\n");
 		fprintf(fp, "# Creator: %s\n", SOFIA_VERSION_FULL);
 		fprintf(fp, "#\n");
-		fprintf(fp, "# Description of columns:\n");
+		fprintf(fp, "# Description of parameters:\n");
 		fprintf(fp, "#\n");
-		fprintf(fp, "# - Channel       Spectral channel number.\n");
+		fprintf(fp, "# - chan    Spectral channel number.\n");
 		fprintf(fp, "#\n");
-		fprintf(fp, "# - Velocity      Radial velocity corresponding to the channel number as\n");
-		fprintf(fp, "#                 described by the WCS information in the header.\n");
+		fprintf(fp, "# - velo    Radial velocity corresponding to the channel number as\n");
+		fprintf(fp, "#           described by the WCS information in the header.\n");
 		fprintf(fp, "#\n");
-		fprintf(fp, "# - Frequency     Frequency corresponding to the channel number as described\n");
-		fprintf(fp, "#                 by the WCS information in the header.\n");
+		fprintf(fp, "# - freq    Frequency corresponding to the channel number as described\n");
+		fprintf(fp, "#           by the WCS information in the header.\n");
 		fprintf(fp, "#\n");
-		fprintf(fp, "# - Flux density  Sum of flux density values of all spatial pixels covered\n");
-		fprintf(fp, "#                 by the source in that channel. If the unit is Jy, then\n");
-		fprintf(fp, "#                 the flux density has already been corrected for the solid\n");
-		fprintf(fp, "#                 angle of the beam. If instead the unit is Jy/beam, you\n");
-		fprintf(fp, "#                 will need to manually divide by the beam area which, for\n");
-		fprintf(fp, "#                 Gaussian beams, will be\n");
+		fprintf(fp, "# - f_sum   Sum of flux density values of all spatial pixels covered\n");
+		fprintf(fp, "#           by the source in that channel. If the unit is Jy, then\n");
+		fprintf(fp, "#           the flux density has already been corrected for the solid\n");
+		fprintf(fp, "#           angle of the beam. If instead the unit is Jy/beam, you\n");
+		fprintf(fp, "#           will need to manually divide by the beam area which, for\n");
+		fprintf(fp, "#           Gaussian beams, will be\n");
 		fprintf(fp, "#\n");
-		fprintf(fp, "#                   pi * a * b / (4 * ln(2))\n");
+		fprintf(fp, "#             pi * a * b / (4 * ln(2))\n");
 		fprintf(fp, "#\n");
-		fprintf(fp, "#                 where a and b are the major and minor axis of the beam in\n");
-		fprintf(fp, "#                 units of pixels.\n");
+		fprintf(fp, "#           where a and b are the major and minor axis of the beam in\n");
+		fprintf(fp, "#           units of pixels.\n");
 		fprintf(fp, "#\n");
-		fprintf(fp, "# - Pixels        Number of spatial pixels covered by the source in that\n");
-		fprintf(fp, "#                 channel. This can be used to determine the statistical\n");
-		fprintf(fp, "#                 uncertainty of the summed flux value. Again, this has\n");
-		fprintf(fp, "#                 not yet been corrected for any potential spatial correla-\n");
-		fprintf(fp, "#                 tion of pixels due to the beam solid angle!\n");
+		fprintf(fp, "# - n_pix   Number of spatial pixels covered by the source in that\n");
+		fprintf(fp, "#           channel. This can be used to determine the statistical\n");
+		fprintf(fp, "#           uncertainty of the summed flux value. Again, this has\n");
+		fprintf(fp, "#           not yet been corrected for any potential spatial correla-\n");
+		fprintf(fp, "#           tion of pixels due to the beam solid angle.\n");
 		fprintf(fp, "#\n");
-		fprintf(fp, "# Note that a WCS-related column will only be present if WCS conversion was\n");
-		fprintf(fp, "# explicitly requested when running the pipeline.\n");
+		fprintf(fp, "# Note that a WCS-related column will only be present if WCS conversion\n");
+		fprintf(fp, "# was explicitly requested when running the pipeline.\n");
 		fprintf(fp, "#\n");
+		fprintf(fp, "# Header rows:\n");
+		fprintf(fp, "#   1 = column number\n");
+		fprintf(fp, "#   2 = parameter name\n");
+		fprintf(fp, "#   3 = parameter unit\n");
 		fprintf(fp, "#\n");
 		if(use_wcs)
 		{
-			fprintf(fp, "#%*s%*s%*s%*s\n", 9, "Channel", 18, String_get(label_spec), 18,        "Flux density", 10, "Pixels");
-			fprintf(fp, "#%*s%*s%*s%*s\n", 9,       "-", 18, String_get(unit_spec),  18, String_get(unit_flux), 10,      "-");
+			// 4 columns (chan, wcs, f_sum, n_pix)
+			fprintf(fp, "#%*s%*s%*s%*s\n", 9, "1",    18, "2",                    18, "3",                   10, "4");
+			fprintf(fp, "#%*s%*s%*s%*s\n", 9, "chan", 18, String_get(label_spec), 18, "f_sum",               10, "n_pix");
+			fprintf(fp, "#%*s%*s%*s%*s\n", 9, "-",    18, String_get(unit_spec),  18, String_get(unit_flux), 10, "-");
 		}
 		else
 		{
-			fprintf(fp, "#%*s%*s%*s\n", 9, "Channel", 18,        "Flux density", 10, "Pixels");
-			fprintf(fp, "#%*s%*s%*s\n", 9,       "-", 18, String_get(unit_flux), 10,      "-");
+			// 3 columns (chan, f_sum, n_pix)
+			fprintf(fp, "#%*s%*s%*s\n", 9, "1",    18, "2",                   10, "3");
+			fprintf(fp, "#%*s%*s%*s\n", 9, "chan", 18, "f_sum",               10, "n_pix");
+			fprintf(fp, "#%*s%*s%*s\n", 9, "-",    18, String_get(unit_flux), 10, "-");
 		}
 		fprintf(fp, "#\n");
 		
