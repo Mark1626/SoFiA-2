@@ -356,7 +356,7 @@ int main(int argc, char **argv)
 	if(!String_compare(check_mime_type, "fits") && !String_compare(check_mime_type, "fit")) String_append(output_file_name, ".fits");
 	String_delete(check_mime_type);
 	
-	// Create output paths
+	// Create global output paths
 	Path *path_cat_ascii = Path_new();
 	Path *path_cat_xml   = Path_new();
 	Path *path_cat_sql   = Path_new();
@@ -376,7 +376,7 @@ int main(int argc, char **argv)
 	Path *path_flag      = Path_new();
 	Path *path_cubelets  = Path_new();
 	
-	// Set up output directory names
+	// Set up global output directory names
 	Path_set_dir(path_cat_ascii, String_get(output_dir_name));
 	Path_set_dir(path_cat_xml,   String_get(output_dir_name));
 	Path_set_dir(path_cat_sql,   String_get(output_dir_name));
@@ -396,7 +396,7 @@ int main(int argc, char **argv)
 	Path_set_dir(path_flag,      String_get(output_dir_name));
 	Path_set_dir(path_cubelets,  String_get(output_dir_name));
 	
-	// Set up output file names
+	// Set up global output file names
 	Path_set_file_from_template(path_cat_ascii,  String_get(output_file_name), "_cat",         ".txt");
 	Path_set_file_from_template(path_cat_xml,    String_get(output_file_name), "_cat",         ".xml");
 	Path_set_file_from_template(path_cat_sql,    String_get(output_file_name), "_cat",         ".sql");

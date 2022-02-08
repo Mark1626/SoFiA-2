@@ -5259,6 +5259,118 @@ PUBLIC void DataCube_create_moments(const DataCube *self, const DataCube *mask, 
 
 
 
+/// @brief Create position-velocity (PV) diagram
+///
+/// Public method for generating a 2D position-velocity (PV) map from the
+/// specified data cube through the spatial pixel position (`x`, `y`) with
+/// a position angle specified by `angle`. The step size along the line
+/// defined by the centre and position angle is specified by `step_size`
+/// (in pixels). Bi-linear interpolation is used to interpolated the flux
+/// values along the specified line. A `DataCube` object containing the
+/// PV diagram will be returned.
+///
+/// @param self       Object self-reference.
+/// @param x0         X coordinate of the centre position of the PV diagram
+///                   in pixels.
+/// @param y0         Y coordinate of the centre position of the PV diagram
+///                   in pixels.
+/// @param angle      Position angle (in degrees) of the line through the
+///                   centre along which the PV diagram is extracted. The
+///                   angle increases anti-clockwise, with 0 pointing up
+///                   (i.e. in increasing direction of the 2nd axis).
+/// @param step_size  Spatial step size (in pixels) of the PV diagram. This
+///                   does not need to be an integer number, but can be a
+///                   fraction of the original pixel size (e.g. 0.5 for
+///                   half-pixel increments).
+/// @param obj_name   Name of the object to be written into the `OBJECT`
+///                   header card of the output FITS file. If set to `NULL`
+///                   then no `OBJECT` card will be written.
+///
+/// @return  Pointer to `DataCube` object containing the PV diagram.
+
+PUBLIC DataCube *DataCube_create_pv(const DataCube *self, const double x0, const double y0, const double angle, const double step_size, const char *obj_name)
+{
+	// Sanity checks
+	check_null(self);
+	
+	// Sort out geometry
+	const size_t nx = DataCube_get_axis_size(self, 0);
+	const size_t ny = DataCube_get_axis_size(self, 1);
+	const size_t nz = DataCube_get_axis_size(self, 2);
+	const size_t steps = (double)(nx > ny ? nx : ny) / (2.0 * step_size);
+	
+	// Create empty PV diagram
+	DataCube *pv = DataCube_blank(2 * steps + 1, nz, 1, -32, self->verbosity);
+	
+	// Create/copy WCS header entries
+	char value[FITS_HEADER_VALUE_SIZE + 1];
+	DataCube_puthd_str(pv, "CTYPE1", "ANGLE   ");
+	if(DataCube_chkhd(self, "CUNIT2"))
+	{
+		DataCube_gethd_str(self, "CUNIT2", value);
+		DataCube_puthd_str(pv, "CUNIT1", value);
+	}
+	if(DataCube_chkhd(self, "CDELT2")) DataCube_puthd_flt(pv, "CDELT1", DataCube_gethd_flt(self, "CDELT2") * step_size);
+	DataCube_puthd_flt(pv, "CRVAL1", 0.0);
+	DataCube_puthd_flt(pv, "CRPIX1", steps + 1);  // NOTE: FITS is 1-based, hence +1 here!
+	if(DataCube_chkhd(self, "CTYPE3"))
+	{
+		DataCube_gethd_str(self, "CTYPE3", value);
+		DataCube_puthd_str(pv, "CTYPE2", value);
+	}
+	if(DataCube_chkhd(self, "CUNIT3"))
+	{
+		DataCube_gethd_str(self, "CUNIT3", value);
+		DataCube_puthd_str(pv, "CUNIT2", value);
+	}
+	if(DataCube_chkhd(self, "CDELT3")) DataCube_puthd_flt(pv, "CDELT2", DataCube_gethd_flt(self, "CDELT3"));
+	if(DataCube_chkhd(self, "CRVAL3")) DataCube_puthd_flt(pv, "CRVAL2", DataCube_gethd_flt(self, "CRVAL3"));
+	if(DataCube_chkhd(self, "CRPIX3")) DataCube_puthd_flt(pv, "CRPIX2", DataCube_gethd_flt(self, "CRPIX3"));
+	DataCube_puthd_str(pv, "ORIGIN", SOFIA_VERSION_FULL);
+	if(DataCube_chkhd(self, "BUNIT"))
+	{
+		DataCube_gethd_str(self, "BUNIT", value);
+		DataCube_puthd_str(pv, "BUNIT", value);
+	}
+	if(obj_name != NULL) DataCube_puthd_str(pv, "OBJECT", obj_name);
+	
+	// Extract PV diagram
+	for(size_t x = 0; x <= 2 * steps; ++x)
+	{
+		// Work out position
+		const double dr = step_size * ((double)x - (double)steps);
+		const double dx = -dr * sin(M_PI * angle / 180.0);
+		const double dy = dr * cos(M_PI * angle / 180.0);
+		const double x_new = x0 + dx;
+		const double y_new = y0 + dy;
+		
+		// Determine 4 nearest pixels
+		const size_t x1 = (size_t)floor(x_new);
+		const size_t x2 = (size_t)ceil(x_new);
+		const size_t y1 = (size_t)floor(y_new);
+		const size_t y2 = (size_t)ceil(y_new);
+		
+		// Blank if pixels are beyond axis range
+		if(x1 >= nx || x2 >= nx || y1 >= ny || y2 >= ny || x2 <= x1 || y2 <= y1)
+		{
+			for(size_t z = 0; z < nz; ++z) DataCube_set_data_flt(pv, x, z, 0, NAN);
+			continue;
+		}
+		
+		for(size_t z = 0; z < nz; ++z)
+		{
+			// Bi-linear interpolation
+			const double f1 = (x2 - x_new) * DataCube_get_data_flt(self, x1, y1, z) + (x_new - x1) * DataCube_get_data_flt(self, x2, y1, z);
+			const double f2 = (x2 - x_new) * DataCube_get_data_flt(self, x1, y2, z) + (x_new - x1) * DataCube_get_data_flt(self, x2, y2, z);
+			DataCube_set_data_flt(pv, x, z, 0, (y2 - y_new) * f1 + (y_new - y1) * f2);
+		}
+	}
+	
+	return pv;
+}
+
+
+
 /// @brief Create cubelets and other source products
 ///
 /// Public method for generating cubelets and other data products
@@ -5436,13 +5548,16 @@ PUBLIC void DataCube_create_cubelets(const DataCube *self, const DataCube *mask,
 			}
 		}
 		
-		// Create moment maps
+		// Create moment maps etc.
 		DataCube *mom0;
 		DataCube *mom1;
 		DataCube *mom2;
 		DataCube *chan;
 		DataCube *snr;
 		DataCube_create_moments(cubelet, masklet, &mom0, &mom1, &mom2, &chan, &snr, Source_get_identifier(src), use_wcs, threshold * rms, rms);
+		
+		// Create PV diagram
+		DataCube *pv = DataCube_create_pv(cubelet, Source_get_par_by_name_flt(src, "x") - x_min, Source_get_par_by_name_flt(src, "y") - y_min, Source_get_par_by_name_flt(src, "kin_pa"), 1.0, Source_get_identifier(src));
 		
 		// Save output products...
 		// ...cubelet
@@ -5503,6 +5618,15 @@ PUBLIC void DataCube_create_cubelets(const DataCube *self, const DataCube *mask,
 			String_append(filename, "_snr.fits");
 			DataCube_add_history(snr, par);
 			DataCube_save(snr, String_get(filename), overwrite, DESTROY);
+		}
+		
+		if(pv != NULL)
+		{
+			String_set(filename, String_get(filename_template));
+			String_append_int(filename, "%ld", src_id);
+			String_append(filename, "_pv.fits");
+			DataCube_add_history(pv, par);
+			DataCube_save(pv, String_get(filename), overwrite, DESTROY);
 		}
 		
 		// ...spectrum
@@ -5584,6 +5708,8 @@ PUBLIC void DataCube_create_cubelets(const DataCube *self, const DataCube *mask,
 		DataCube_delete(mom1);
 		DataCube_delete(mom2);
 		DataCube_delete(chan);
+		DataCube_delete(snr);
+		DataCube_delete(pv);
 		free(spectrum);
 		free(pixcount);
 	}

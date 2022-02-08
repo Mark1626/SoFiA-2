@@ -163,6 +163,7 @@ PUBLIC void       DataCube_parameterise     (const DataCube *self, const DataCub
 
 // Create moment maps and cubelets
 PUBLIC void       DataCube_create_moments   (const DataCube *self, const DataCube *mask, DataCube **mom0, DataCube **mom1, DataCube **mom2, DataCube **chan, DataCube **snr, const char *obj_name, bool use_wcs, const double threshold, const double rms);
+PUBLIC DataCube  *DataCube_create_pv        (const DataCube *self, const double x0, const double y0, const double angle, const double step_size, const char *obj_name);
 PUBLIC void       DataCube_create_cubelets  (const DataCube *self, const DataCube *mask, const Catalog *cat, const char *basename, const bool overwrite, bool use_wcs, bool physical, const size_t margin, const double threshold, const Parameter *par);
 
 // WCS
