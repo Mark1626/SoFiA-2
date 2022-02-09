@@ -5262,19 +5262,19 @@ PUBLIC void DataCube_create_moments(const DataCube *self, const DataCube *mask, 
 /// @brief Create position-velocity (PV) diagram
 ///
 /// Public method for generating a 2D position-velocity (PV) map from the
-/// specified data cube through the spatial pixel position (`x`, `y`) with
+/// specified data cube through the spatial pixel position (`x0`, `y0`) with
 /// a position angle specified by `angle`. The step size along the line
 /// defined by the centre and position angle is specified by `step_size`
-/// (in pixels). Bi-linear interpolation is used to interpolated the flux
-/// values along the specified line. A `DataCube` object containing the
-/// PV diagram will be returned.
+/// (in pixels). Bi-linear interpolation is used to interpolate the flux
+/// values along the specified line. A DataCube object containing the PV
+/// diagram will be returned.
 ///
 /// @param self       Object self-reference.
 /// @param x0         X coordinate of the centre position of the PV diagram
 ///                   in pixels.
 /// @param y0         Y coordinate of the centre position of the PV diagram
 ///                   in pixels.
-/// @param angle      Position angle (in degrees) of the line through the
+/// @param angle      Position angle (in radians) of the line through the
 ///                   centre along which the PV diagram is extracted. The
 ///                   angle increases anti-clockwise, with 0 pointing up
 ///                   (i.e. in increasing direction of the 2nd axis).
@@ -5339,10 +5339,8 @@ PUBLIC DataCube *DataCube_create_pv(const DataCube *self, const double x0, const
 	{
 		// Work out position
 		const double dr = step_size * ((double)x - (double)steps);
-		const double dx = -dr * sin(M_PI * angle / 180.0);
-		const double dy = dr * cos(M_PI * angle / 180.0);
-		const double x_new = x0 + dx;
-		const double y_new = y0 + dy;
+		const double x_new = x0 - dr * sin(angle);
+		const double y_new = y0 + dr * cos(angle);
 		
 		// Determine 4 nearest pixels
 		const size_t x1 = (size_t)floor(x_new);
@@ -5557,7 +5555,7 @@ PUBLIC void DataCube_create_cubelets(const DataCube *self, const DataCube *mask,
 		DataCube_create_moments(cubelet, masklet, &mom0, &mom1, &mom2, &chan, &snr, Source_get_identifier(src), use_wcs, threshold * rms, rms);
 		
 		// Create PV diagram
-		DataCube *pv = DataCube_create_pv(cubelet, Source_get_par_by_name_flt(src, "x") - x_min, Source_get_par_by_name_flt(src, "y") - y_min, Source_get_par_by_name_flt(src, "kin_pa"), 1.0, Source_get_identifier(src));
+		DataCube *pv = DataCube_create_pv(cubelet, Source_get_par_by_name_flt(src, "x") - x_min, Source_get_par_by_name_flt(src, "y") - y_min, Source_get_par_by_name_flt(src, "kin_pa") * M_PI / 180.0, 1.0, Source_get_identifier(src));
 		
 		// Save output products...
 		// ...cubelet
