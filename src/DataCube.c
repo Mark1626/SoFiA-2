@@ -4864,7 +4864,7 @@ PRIVATE void DataCube_get_wcs_info(const DataCube *self, String **unit_flux_dens
 		String_set(*ucd_spec, "spect.dopplerVeloc.radio");
 		if(String_size(*unit_spec) == 0) String_set(*unit_spec, "m/s");
 	}
-	else if(DataCube_cmphd(self, "CTYPE3", "VOPT", 4))
+	else if(DataCube_cmphd(self, "CTYPE3", "VOPT", 4) || DataCube_cmphd(self, "CTYPE3", "FELO", 4))
 	{
 		String_set(*label_spec, "v_opt");
 		String_set(*ucd_spec, "spect.dopplerVeloc.opt");
@@ -4873,12 +4873,6 @@ PRIVATE void DataCube_get_wcs_info(const DataCube *self, String **unit_flux_dens
 	else if(DataCube_cmphd(self, "CTYPE3", "VELO", 4))
 	{
 		String_set(*label_spec, "v_app");
-		String_set(*ucd_spec, "spect.dopplerVeloc");
-		if(String_size(*unit_spec) == 0) String_set(*unit_spec, "m/s");
-	}
-	else if(DataCube_cmphd(self, "CTYPE3", "FELO", 4))
-	{
-		String_set(*label_spec, "v_opt");
 		String_set(*ucd_spec, "spect.dopplerVeloc");
 		if(String_size(*unit_spec) == 0) String_set(*unit_spec, "m/s");
 	}
@@ -5441,9 +5435,19 @@ PUBLIC void DataCube_create_cubelets(const DataCube *self, const DataCube *mask,
 		String_set(label_spec, "freq");
 		if(String_size(unit_spec) == 0) String_set(unit_spec,  "Hz");  // FITS default
 	}
-	else if(DataCube_cmphd(self, "CTYPE3", "VRAD", 4) || DataCube_cmphd(self, "CTYPE3", "VOPT", 4) || DataCube_cmphd(self, "CTYPE3", "VELO", 4) || DataCube_cmphd(self, "CTYPE3", "FELO", 4))
+	else if(DataCube_cmphd(self, "CTYPE3", "VRAD", 4))
 	{
-		String_set(label_spec, "velo");
+		String_set(label_spec, "v_rad");
+		if(String_size(unit_spec) == 0) String_set(unit_spec,  "m/s");  // FITS default
+	}
+	else if(DataCube_cmphd(self, "CTYPE3", "VOPT", 4) || DataCube_cmphd(self, "CTYPE3", "FELO", 4))
+	{
+		String_set(label_spec, "v_opt");
+		if(String_size(unit_spec) == 0) String_set(unit_spec,  "m/s");  // FITS default
+	}
+	else if(DataCube_cmphd(self, "CTYPE3", "VELO", 4))
+	{
+		String_set(label_spec, "v_app");
 		if(String_size(unit_spec) == 0) String_set(unit_spec,  "m/s");  // FITS default
 	}
 	else
@@ -5643,10 +5647,13 @@ PUBLIC void DataCube_create_cubelets(const DataCube *self, const DataCube *mask,
 		fprintf(fp, "#\n");
 		fprintf(fp, "# Description of parameters:\n");
 		fprintf(fp, "#\n");
-		fprintf(fp, "# - chan    Spectral channel number.\n");
+		fprintf(fp, "# - chan    Spectral channel number (zero-based).\n");
 		fprintf(fp, "#\n");
-		fprintf(fp, "# - velo    Radial velocity corresponding to the channel number as\n");
-		fprintf(fp, "#           described by the WCS information in the header.\n");
+		fprintf(fp, "# - v_opt / v_rad / v_app\n");
+		fprintf(fp, "#           Radial velocity corresponding to the channel number as\n");
+		fprintf(fp, "#           described by the WCS information in the header. The suf-\n");
+		fprintf(fp, "#           fix denotes optical, radio or apparent radial velocity,\n");
+		fprintf(fp, "#           respectively.\n");
 		fprintf(fp, "#\n");
 		fprintf(fp, "# - freq    Frequency corresponding to the channel number as described\n");
 		fprintf(fp, "#           by the WCS information in the header.\n");
