@@ -5327,6 +5327,13 @@ PUBLIC DataCube *DataCube_create_pv(const DataCube *self, const double x0, const
 		DataCube_puthd_str(pv, "BUNIT", value);
 	}
 	if(obj_name != NULL) DataCube_puthd_str(pv, "OBJECT", obj_name);
+	if(DataCube_chkhd(self, "RESTFREQ")) DataCube_puthd_flt(pv, "RESTFREQ", DataCube_gethd_flt(self, "RESTFREQ"));
+	if(DataCube_chkhd(self, "RESTFRQ"))  DataCube_puthd_flt(pv, "RESTFRQ",  DataCube_gethd_flt(self, "RESTFRQ"));
+	if(DataCube_chkhd(self, "SPECSYS"))
+	{
+		DataCube_gethd_str(self, "SPECSYS", value);
+		DataCube_puthd_str(pv, "SPECSYS", value);
+	}
 	
 	// Extract PV diagram
 	for(size_t x = 0; x <= 2 * steps; ++x)
