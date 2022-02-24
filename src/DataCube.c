@@ -5329,6 +5329,7 @@ PUBLIC DataCube *DataCube_create_pv(const DataCube *self, const double x0, const
 	if(obj_name != NULL) DataCube_puthd_str(pv, "OBJECT", obj_name);
 	if(DataCube_chkhd(self, "RESTFREQ")) DataCube_puthd_flt(pv, "RESTFREQ", DataCube_gethd_flt(self, "RESTFREQ"));
 	if(DataCube_chkhd(self, "RESTFRQ"))  DataCube_puthd_flt(pv, "RESTFRQ",  DataCube_gethd_flt(self, "RESTFRQ"));
+	if(DataCube_chkhd(self, "VELREF"))  DataCube_puthd_int(pv, "VELREF",  DataCube_gethd_int(self, "VELREF"));
 	if(DataCube_chkhd(self, "SPECSYS"))
 	{
 		DataCube_gethd_str(self, "SPECSYS", value);

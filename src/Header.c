@@ -872,6 +872,7 @@ PUBLIC void Header_copy_wcs(const Header *source, Header *target)
 	// Rest frequency and velocity
 	if(Header_check(source, "RESTFREQ")) Header_set_flt(target, "RESTFREQ", Header_get_flt(source, "RESTFREQ"));
 	if(Header_check(source, "RESTFRQ"))  Header_set_flt(target, "RESTFRQ",  Header_get_flt(source, "RESTFRQ"));
+	if(Header_check(source, "VELREF"))  Header_set_int(target, "VELREF",  Header_get_int(source, "VELREF"));
 	if(Header_check(source, "SPECSYS"))
 	{
 		Header_get_str(source, "SPECSYS", value);
