@@ -560,6 +560,19 @@ int main(int argc, char **argv)
 	DataCube *dataCube = DataCube_new(verbosity);
 	DataCube_load(dataCube, Path_get(path_data_in), region);
 	
+	// Check for CELLSCAL = '1/F' setting
+	if(DataCube_cmphd(dataCube, "CELLSCAL", "1/F", 3))
+	{
+		warning( "┌──────────────────────────────────────────────────────────┐\n"
+		"         │ FITS header keyword of CELLSCAL = '1/F' detected.  SoFiA │\n"
+		"         │ does not support cubes with variable spatial pixel size. │\n"
+		"         │ While basic source finding will work, there could be un- │\n"
+		"         │ foreseen side effects, including wrong coordinates in 2D │\n"
+		"         │ output images from SoFiA (such as moment maps) and inac- │\n"
+		"         │ curate celestial coordinate measurements.                │\n"
+		"         └──────────────────────────────────────────────────────────┘\n");
+	}
+	
 	// Search for values of infinity and append affected pixels to flagging region
 	// (Yes, some data cubes do contain those!)
 	if(DataCube_flag_infinity(dataCube, flag_regions)) use_flagging = true;
