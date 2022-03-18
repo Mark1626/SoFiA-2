@@ -41,6 +41,7 @@
 #include <stdint.h>
 #include "common.h"
 #include "Source.h"
+#include "Parameter.h"
 
 #define CATALOG_COLUMN_WIDTH 14  ///< Defines the width of each column in the plain-text SoFiA source catalogue.
 
@@ -69,7 +70,7 @@ PUBLIC  bool     Catalog_source_exists (const Catalog *self, const Source *src, 
 
 PUBLIC  size_t   Catalog_get_size      (const Catalog *self);
 
-PUBLIC  void     Catalog_save          (const Catalog *self, const char *filename, const file_format format, const bool overwrite);
+PUBLIC  void     Catalog_save          (const Catalog *self, const char *filename, const file_format format, const bool overwrite, const Parameter *par);
 
 // Private methods
 PRIVATE void     Catalog_append_memory (Catalog *self);

@@ -270,8 +270,10 @@ PUBLIC size_t Catalog_get_size(const Catalog *self)
 ///                   VOTable format or `CATALOG_FORMAT_SQL` for SQL
 ///                   table format.
 /// @param overwrite  Overwrite existing file (`true`) or not (`false`)?
+/// @param par        SoFiA parameter settings for inclusion in VOTable
+///                   metadata. Set to NULL if not required.
 
-PUBLIC void Catalog_save(const Catalog *self, const char *filename, const file_format format, const bool overwrite)
+PUBLIC void Catalog_save(const Catalog *self, const char *filename, const file_format format, const bool overwrite, const Parameter *par)
 {
 	// Sanity checks
 	check_null(self);
@@ -313,10 +315,38 @@ PUBLIC void Catalog_save(const Catalog *self, const char *filename, const file_f
 		fprintf(fp, "%s<VOTABLE version=\"1.3\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.ivoa.net/xml/VOTable/v1.3\">\n", indentation[0]);
 		fprintf(fp, "%s<RESOURCE>\n", indentation[1]);
 		fprintf(fp, "%s<DESCRIPTION>Source catalogue created by the Source Finding Application (SoFiA %s)</DESCRIPTION>\n", indentation[2], SOFIA_VERSION);
-		fprintf(fp, "%s<PARAM name=\"Creator\" datatype=\"char\" arraysize=\"*\" value=\"SoFiA %s\" ucd=\"meta.id;meta.software\"/>\n", indentation[2], SOFIA_VERSION);
 		fprintf(fp, "%s<PARAM name=\"Time\" datatype=\"char\" arraysize=\"*\" value=\"%s\" ucd=\"time.creation\"/>\n", indentation[2], current_time_string);
+		fprintf(fp, "%s<PARAM name=\"Creator\" datatype=\"char\" arraysize=\"*\" value=\"SoFiA %s\" ucd=\"meta.id;meta.software\"/>\n", indentation[2], SOFIA_VERSION);
 		//fprintf(fp, "%s<COOSYS ID=\"wcs\" system=\"ICRS\" equinox=\"J2000\"/>\n", indentation[2]);
 		// WARNING: COOSYS needs to be sorted out; see http://www.ivoa.net/documents/VOTable/ for documentation
+		
+		// Include parameter settings as INFO
+		if(par != NULL)
+		{
+			String *key   = String_new("");
+			String *value = String_new("");
+			
+			for(size_t i = 0; i < Parameter_get_size(par); ++i)
+			{
+				// Construct value string
+				String_set(key, Parameter_get_key(par, i));
+				String_set(value, Parameter_get_str_index(par, i));
+				
+				// Sanitise value string
+				for(size_t j = 0; j < String_size(value); ++j)
+				{
+					const char c = String_at(value, j);
+					if(c < '\x20' || c > '\x7E') String_set_char(value, j, '\x23');  // Replace with '#'
+				}
+				
+				// Write history entry
+				fprintf(fp, "%s<PARAM name=\"%s\" datatype=\"char\" arraysize=\"*\" value=\"%s\" ucd=\"meta.note\"/>\n", indentation[2], String_get(key), String_get(value));
+			}
+			
+			String_delete(key);
+			String_delete(value);
+		}
+		
 		fprintf(fp, "%s<TABLE ID=\"SoFiA_source_catalogue\" name=\"SoFiA source catalogue\">\n", indentation[2]);
 		
 		// Column descriptors

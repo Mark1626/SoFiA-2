@@ -1317,8 +1317,8 @@ int main(int argc, char **argv)
 		Catalog *cat_rel_par_pos = Catalog_new();
 		
 		LinkerPar_get_rel_cat(lpar, String_get(unit_flux), &cat_rel_par_neg, &cat_rel_par_pos);
-		Catalog_save(cat_rel_par_neg, Path_get(path_rel_cat_n), CATALOG_FORMAT_XML, overwrite);
-		Catalog_save(cat_rel_par_pos, Path_get(path_rel_cat_p), CATALOG_FORMAT_XML, overwrite);
+		Catalog_save(cat_rel_par_neg, Path_get(path_rel_cat_n), CATALOG_FORMAT_XML, overwrite, par);
+		Catalog_save(cat_rel_par_pos, Path_get(path_rel_cat_p), CATALOG_FORMAT_XML, overwrite, par);
 		
 		Catalog_delete(cat_rel_par_neg);
 		Catalog_delete(cat_rel_par_pos);
@@ -1536,19 +1536,19 @@ int main(int argc, char **argv)
 		if(write_ascii)
 		{
 			message("Writing ASCII file:   %s", Path_get_file(path_cat_ascii));
-			Catalog_save(catalog, Path_get(path_cat_ascii), CATALOG_FORMAT_ASCII, overwrite);
+			Catalog_save(catalog, Path_get(path_cat_ascii), CATALOG_FORMAT_ASCII, overwrite, NULL);
 		}
 		
 		if(write_xml)
 		{
 			message("Writing VOTable file: %s", Path_get_file(path_cat_xml));
-			Catalog_save(catalog, Path_get(path_cat_xml), CATALOG_FORMAT_XML, overwrite);
+			Catalog_save(catalog, Path_get(path_cat_xml), CATALOG_FORMAT_XML, overwrite, par);
 		}
 		
 		if(write_sql)
 		{
 			message("Writing SQL file:     %s", Path_get_file(path_cat_sql));
-			Catalog_save(catalog, Path_get(path_cat_sql), CATALOG_FORMAT_SQL, overwrite);
+			Catalog_save(catalog, Path_get(path_cat_sql), CATALOG_FORMAT_SQL, overwrite, NULL);
 		}
 		
 		// Print time
