@@ -514,13 +514,15 @@ DATA_T median_SFX(DATA_T *data, const size_t size, const bool fast)
 ///
 /// @return Median of the data array values.
 ///
-/// @note This function is not `NaN`-safe.
+/// @note This function **is** `NaN`-safe.
 
 DATA_T median_safe_SFX(const DATA_T *data, const size_t size, const bool fast)
 {
 	DATA_T *data_copy = (DATA_T *)memory(MALLOC, size, sizeof(DATA_T));
-	memcpy(data_copy, data, size * sizeof(DATA_T));
-	const DATA_T result = median_SFX(data_copy, size, fast);
+	//memcpy(data_copy, data, size * sizeof(DATA_T));
+	size_t size_copy = 0;
+	for(const DATA_T *ptr = data + size; ptr --> data;) if(IS_NOT_NAN(*ptr)) data_copy[size_copy++] = *ptr;
+	const DATA_T result = median_SFX(data_copy, size_copy, fast);
 	free(data_copy);
 	return result;
 }

@@ -3527,7 +3527,7 @@ PUBLIC void DataCube_autoflag(const DataCube *self, const double threshold, cons
 		message("Auto-flagging of spatial pixels:");
 		size_t counter = 0;
 		
-		// 32-bit single-precision
+		// 64-bit double-precision
 		DataCube *noise_array = DataCube_blank(size_x, size_y, 1, -64, self->verbosity);
 		
 		// Loop over all pixels

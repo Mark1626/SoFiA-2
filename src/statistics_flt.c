@@ -514,13 +514,15 @@ float median_flt(float *data, const size_t size, const bool fast)
 ///
 /// @return Median of the data array values.
 ///
-/// @note This function is not `NaN`-safe.
+/// @note This function **is** `NaN`-safe.
 
 float median_safe_flt(const float *data, const size_t size, const bool fast)
 {
 	float *data_copy = (float *)memory(MALLOC, size, sizeof(float));
-	memcpy(data_copy, data, size * sizeof(float));
-	const float result = median_flt(data_copy, size, fast);
+	//memcpy(data_copy, data, size * sizeof(float));
+	size_t size_copy = 0;
+	for(const float *ptr = data + size; ptr --> data;) if(IS_NOT_NAN(*ptr)) data_copy[size_copy++] = *ptr;
+	const float result = median_flt(data_copy, size_copy, fast);
 	free(data_copy);
 	return result;
 }

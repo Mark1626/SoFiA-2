@@ -514,13 +514,15 @@ double median_dbl(double *data, const size_t size, const bool fast)
 ///
 /// @return Median of the data array values.
 ///
-/// @note This function is not `NaN`-safe.
+/// @note This function **is** `NaN`-safe.
 
 double median_safe_dbl(const double *data, const size_t size, const bool fast)
 {
 	double *data_copy = (double *)memory(MALLOC, size, sizeof(double));
-	memcpy(data_copy, data, size * sizeof(double));
-	const double result = median_dbl(data_copy, size, fast);
+	//memcpy(data_copy, data, size * sizeof(double));
+	size_t size_copy = 0;
+	for(const double *ptr = data + size; ptr --> data;) if(IS_NOT_NAN(*ptr)) data_copy[size_copy++] = *ptr;
+	const double result = median_dbl(data_copy, size_copy, fast);
 	free(data_copy);
 	return result;
 }
