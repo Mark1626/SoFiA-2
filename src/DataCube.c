@@ -231,7 +231,7 @@ PUBLIC DataCube *DataCube_blank(const size_t nx, const size_t ny, const size_t n
 	// Get current date and time
 	char current_time_string[32];
 	time_t current_time = time(NULL);
-	strftime(current_time_string, 32, "%Y-%m-%dT%H:%M:%S", localtime(&current_time));
+	strftime(current_time_string, 32, "%Y-%m-%dT%H:%M:%S", gmtime(&current_time));
 	
 	// Create data array filled with 0
 	self->data = (char *)memory(CALLOC, self->data_size, self->word_size * sizeof(char));
@@ -5296,7 +5296,7 @@ PUBLIC DataCube *DataCube_create_pv(const DataCube *self, const double x0, const
 	// Get current date and time
 	char current_time_string[32];
 	time_t current_time = time(NULL);
-	strftime(current_time_string, 32, "%Y-%m-%dT%H:%M:%S", localtime(&current_time));
+	strftime(current_time_string, 32, "%Y-%m-%dT%H:%M:%S", gmtime(&current_time));
 	
 	// Sort out geometry
 	const size_t nx = DataCube_get_axis_size(self, 0);
