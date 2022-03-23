@@ -316,7 +316,7 @@ PUBLIC void Catalog_save(const Catalog *self, const char *filename, const file_f
 		fprintf(fp, "%s<RESOURCE>\n", indentation[1]);
 		fprintf(fp, "%s<DESCRIPTION>Source catalogue created by the Source Finding Application (SoFiA %s)</DESCRIPTION>\n", indentation[2], SOFIA_VERSION);
 		fprintf(fp, "%s<PARAM name=\"Time\" datatype=\"char\" arraysize=\"*\" value=\"%s\" ucd=\"time.creation\"/>\n", indentation[2], current_time_string);
-		fprintf(fp, "%s<PARAM name=\"Creator\" datatype=\"char\" arraysize=\"*\" value=\"SoFiA %s\" ucd=\"meta.id;meta.software\"/>\n", indentation[2], SOFIA_VERSION);
+		fprintf(fp, "%s<PARAM name=\"Creator\" datatype=\"char\" arraysize=\"*\" value=\"SoFiA %s (%s)\" ucd=\"meta.id;meta.software\"/>\n", indentation[2], SOFIA_VERSION, SOFIA_CREATION_DATE);
 		//fprintf(fp, "%s<COOSYS ID=\"wcs\" system=\"ICRS\" equinox=\"J2000\"/>\n", indentation[2]);
 		// WARNING: COOSYS needs to be sorted out; see http://www.ivoa.net/documents/VOTable/ for documentation
 		
@@ -401,7 +401,7 @@ PUBLIC void Catalog_save(const Catalog *self, const char *filename, const file_f
 		// Write SQL catalogue
 		const char *catalog_name = "SoFiA-Catalogue";
 		
-		fprintf(fp, "-- SoFiA source catalogue\n-- Creator: %s\n-- Time:    %s\n\n", SOFIA_VERSION_FULL, current_time_string);
+		fprintf(fp, "-- SoFiA source catalogue\n-- Creator: %s (%s)\n-- Time:    %s\n\n", SOFIA_VERSION_FULL, SOFIA_CREATION_DATE, current_time_string);
 		fprintf(fp, "SET SQL_MODE = \"NO_AUTO_VALUE_ON_ZERO\";\n\n");
 		fprintf(fp, "CREATE TABLE IF NOT EXISTS `%s` (\n", catalog_name);
 		fprintf(fp, "\t`name` VARCHAR(255) NOT NULL,\n");
@@ -445,7 +445,7 @@ PUBLIC void Catalog_save(const Catalog *self, const char *filename, const file_f
 	else
 	{
 		// Write ASCII catalogue
-		fprintf(fp, "# SoFiA source catalogue\n# Creator: %s\n# Time:    %s\n#\n", SOFIA_VERSION_FULL, current_time_string);
+		fprintf(fp, "# SoFiA source catalogue\n# Creator: %s (%s)\n# Time:    %s\n#\n", SOFIA_VERSION_FULL, SOFIA_CREATION_DATE, current_time_string);
 		fprintf(fp, "# Note that the plain-text catalogue is solely intended for\n");
 		fprintf(fp, "# visual inspection and should not be used for quantitative\n");
 		fprintf(fp, "# analysis due to limited precision and the lack of Unified\n");

@@ -228,6 +228,11 @@ PUBLIC DataCube *DataCube_blank(const size_t nx, const size_t ny, const size_t n
 	self->axis_size[2] = nz;
 	self->axis_size[3] = 0;
 	
+	// Get current date and time
+	char current_time_string[32];
+	time_t current_time = time(NULL);
+	strftime(current_time_string, 32, "%Y-%m-%dT%H:%M:%S", localtime(&current_time));
+	
 	// Create data array filled with 0
 	self->data = (char *)memory(CALLOC, self->data_size, self->word_size * sizeof(char));
 	
@@ -263,7 +268,8 @@ PUBLIC DataCube *DataCube_blank(const size_t nx, const size_t ny, const size_t n
 		Header_set_flt(self->header, "CRVAL3", 1.0);
 	}
 	
-	Header_set_str(self->header, "ORIGIN", SOFIA_VERSION_FULL);
+	Header_set_str(self->header, "ORIGIN", SOFIA_VERSION_FULL " (" SOFIA_CREATION_DATE ")");
+	Header_set_str(self->header, "DATE", current_time_string);
 	
 	return self;
 }
@@ -5287,6 +5293,11 @@ PUBLIC DataCube *DataCube_create_pv(const DataCube *self, const double x0, const
 	// Sanity checks
 	check_null(self);
 	
+	// Get current date and time
+	char current_time_string[32];
+	time_t current_time = time(NULL);
+	strftime(current_time_string, 32, "%Y-%m-%dT%H:%M:%S", localtime(&current_time));
+	
 	// Sort out geometry
 	const size_t nx = DataCube_get_axis_size(self, 0);
 	const size_t ny = DataCube_get_axis_size(self, 1);
@@ -5320,7 +5331,8 @@ PUBLIC DataCube *DataCube_create_pv(const DataCube *self, const double x0, const
 	if(DataCube_chkhd(self, "CDELT3")) DataCube_puthd_flt(pv, "CDELT2", DataCube_gethd_flt(self, "CDELT3"));
 	if(DataCube_chkhd(self, "CRVAL3")) DataCube_puthd_flt(pv, "CRVAL2", DataCube_gethd_flt(self, "CRVAL3"));
 	if(DataCube_chkhd(self, "CRPIX3")) DataCube_puthd_flt(pv, "CRPIX2", DataCube_gethd_flt(self, "CRPIX3"));
-	DataCube_puthd_str(pv, "ORIGIN", SOFIA_VERSION_FULL);
+	DataCube_puthd_str(pv, "ORIGIN", SOFIA_VERSION_FULL " (" SOFIA_CREATION_DATE ")");
+	DataCube_puthd_str(pv, "DATE", current_time_string);
 	if(DataCube_chkhd(self, "BUNIT"))
 	{
 		DataCube_gethd_str(self, "BUNIT", value);
@@ -5645,13 +5657,19 @@ PUBLIC void DataCube_create_cubelets(const DataCube *self, const DataCube *mask,
 		String_append(filename, "_spec.txt");
 		message("Creating text file: %s", strrchr(String_get(filename), '/') == NULL ? String_get(filename) : strrchr(String_get(filename), '/') + 1);
 		
+		// Get current date and time
+		char current_time_string[64];
+		time_t current_time = time(NULL);
+		strftime(current_time_string, 64, "%a, %d %b %Y, %H:%M:%S", localtime(&current_time));
+		
 		FILE *fp;
 		if(overwrite) fp = fopen(String_get(filename), "wb");
 		else fp = fopen(String_get(filename), "wxb");
 		ensure(fp != NULL, ERR_FILE_ACCESS, "Failed to open output file: %s", String_get(filename));
 		
 		fprintf(fp, "# Integrated source spectrum\n");
-		fprintf(fp, "# Creator: %s\n", SOFIA_VERSION_FULL);
+		fprintf(fp, "# Creator: %s (%s)\n", SOFIA_VERSION_FULL, SOFIA_CREATION_DATE);
+		fprintf(fp, "# Time:    %s\n", current_time_string);
 		fprintf(fp, "#\n");
 		fprintf(fp, "# Description of parameters:\n");
 		fprintf(fp, "#\n");
