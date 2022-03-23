@@ -491,7 +491,7 @@ float nth_element_flt(float *data, const size_t size, const size_t n)
 ///
 /// @return Median of the data array values.
 ///
-/// @note This function is not `NaN`-safe and will modify
+/// @note This function is **not** `NaN`-safe and will modify
 /// the original data array.
 
 float median_flt(float *data, const size_t size, const bool fast)
