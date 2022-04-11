@@ -5447,8 +5447,8 @@ PUBLIC void DataCube_create_cubelets(const DataCube *self, const DataCube *mask,
 	use_wcs = use_wcs ? (wcs = DataCube_extract_wcs(self)) != NULL : false;
 	
 	// Extract spectral unit from header
-	String *label_spec = Header_get_string(self->header, "CTYPE3");
-	String *unit_spec  = Header_get_string(self->header, "CUNIT3");
+	String *label_spec = String_trim(Header_get_string(self->header, "CTYPE3"));
+	String *unit_spec  = String_trim(Header_get_string(self->header, "CUNIT3"));
 	
 	if(DataCube_cmphd(self, "CTYPE3", "FREQ", 4))
 	{
