@@ -56,6 +56,8 @@ Several useful tools have been developed to help with running SoFiA 2 or process
   Download: https://github.com/AusSRC/SoFiAX
 * **OptiFind** is a wrapper around SoFiA 2 that can be used to search for HI emission in small regions of a data cube as defined by an input catalogue.
   Download: https://github.com/SoFiA-Admin/OptiFind
+* **SoFiA Image Pipeline** is a powerful Python script for generating plots of SoFiA output products, including images, spectra and PV diagrams.
+  Download: https://github.com/kmhess/SoFiA-image-pipeline
 * **SpecPlot** is a tool for producing publication-ready plots of integrated spectra from SoFiA 2.
   Download: https://github.com/SoFiA-Admin/SpecPlot
 * **BusyFit** is a tool for fitting the Busy Function to an integrated spectrum for the purpose of accurate parameterisation.
