@@ -830,7 +830,7 @@ PUBLIC void Header_copy_wcs(const Header *source, Header *target)
 		}
 	}
 	
-	// PCi_j and CDi_j keywords
+	// PCi_j, PVi_j and CDi_j keywords
 	if(Header_check(source, "PC1_1") && dimensions >= 2) Header_set_flt(target, "PC1_1", Header_get_flt(source, "PC1_1"));
 	if(Header_check(source, "PC2_1") && dimensions >= 2) Header_set_flt(target, "PC2_1", Header_get_flt(source, "PC2_1"));
 	if(Header_check(source, "PC3_1") && dimensions >= 3) Header_set_flt(target, "PC3_1", Header_get_flt(source, "PC3_1"));
@@ -849,6 +849,25 @@ PUBLIC void Header_copy_wcs(const Header *source, Header *target)
 	if(Header_check(source, "PC01_03") && dimensions >= 3) Header_set_flt(target, "PC01_03", Header_get_flt(source, "PC01_03"));
 	if(Header_check(source, "PC02_03") && dimensions >= 3) Header_set_flt(target, "PC02_03", Header_get_flt(source, "PC02_03"));
 	if(Header_check(source, "PC03_03") && dimensions >= 3) Header_set_flt(target, "PC03_03", Header_get_flt(source, "PC03_03"));
+	
+	if(Header_check(source, "PV1_1") && dimensions >= 2) Header_set_flt(target, "PV1_1", Header_get_flt(source, "PV1_1"));
+	if(Header_check(source, "PV2_1") && dimensions >= 2) Header_set_flt(target, "PV2_1", Header_get_flt(source, "PV2_1"));
+	if(Header_check(source, "PV3_1") && dimensions >= 3) Header_set_flt(target, "PV3_1", Header_get_flt(source, "PV3_1"));
+	if(Header_check(source, "PV1_2") && dimensions >= 2) Header_set_flt(target, "PV1_2", Header_get_flt(source, "PV1_2"));
+	if(Header_check(source, "PV2_2") && dimensions >= 2) Header_set_flt(target, "PV2_2", Header_get_flt(source, "PV2_2"));
+	if(Header_check(source, "PV3_2") && dimensions >= 3) Header_set_flt(target, "PV3_2", Header_get_flt(source, "PV3_2"));
+	if(Header_check(source, "PV1_3") && dimensions >= 3) Header_set_flt(target, "PV1_3", Header_get_flt(source, "PV1_3"));
+	if(Header_check(source, "PV2_3") && dimensions >= 3) Header_set_flt(target, "PV2_3", Header_get_flt(source, "PV2_3"));
+	if(Header_check(source, "PV3_3") && dimensions >= 3) Header_set_flt(target, "PV3_3", Header_get_flt(source, "PV3_3"));
+	if(Header_check(source, "PV01_01") && dimensions >= 2) Header_set_flt(target, "PV01_01", Header_get_flt(source, "PV01_01"));
+	if(Header_check(source, "PV02_01") && dimensions >= 2) Header_set_flt(target, "PV02_01", Header_get_flt(source, "PV02_01"));
+	if(Header_check(source, "PV03_01") && dimensions >= 3) Header_set_flt(target, "PV03_01", Header_get_flt(source, "PV03_01"));
+	if(Header_check(source, "PV01_02") && dimensions >= 2) Header_set_flt(target, "PV01_02", Header_get_flt(source, "PV01_02"));
+	if(Header_check(source, "PV02_02") && dimensions >= 2) Header_set_flt(target, "PV02_02", Header_get_flt(source, "PV02_02"));
+	if(Header_check(source, "PV03_02") && dimensions >= 3) Header_set_flt(target, "PV03_02", Header_get_flt(source, "PV03_02"));
+	if(Header_check(source, "PV01_03") && dimensions >= 3) Header_set_flt(target, "PV01_03", Header_get_flt(source, "PV01_03"));
+	if(Header_check(source, "PV02_03") && dimensions >= 3) Header_set_flt(target, "PV02_03", Header_get_flt(source, "PV02_03"));
+	if(Header_check(source, "PV03_03") && dimensions >= 3) Header_set_flt(target, "PV03_03", Header_get_flt(source, "PV03_03"));
 	
 	if(Header_check(source, "CD1_1") && dimensions >= 2) Header_set_flt(target, "CD1_1", Header_get_flt(source, "CD1_1"));
 	if(Header_check(source, "CD2_1") && dimensions >= 2) Header_set_flt(target, "CD2_1", Header_get_flt(source, "CD2_1"));
