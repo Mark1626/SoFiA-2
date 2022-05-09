@@ -573,7 +573,7 @@ int main(int argc, char **argv)
                 "         │ It is possible to avoid this problem by regridding the   │\n"
                 "         │ cube to a fixed pixel size before running SoFiA. This    │\n"
                 "         │ can be done with, e.g., MIRIAD's task 'regrid' setting   │\n"
-                "         │ 'option=noscale'. Note, however, that the regridded cube │\n"
+                "         │ 'options=noscale'. However, note that the regridded cube │\n"
                 "         │ may have a varying beam size (in pixels), which may lead │\n"
                 "         │ to errors in, e.g., the measurement of total fluxes.     │\n"
 		"         └──────────────────────────────────────────────────────────┘\n");
