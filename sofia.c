@@ -570,6 +570,12 @@ int main(int argc, char **argv)
 		"         │ foreseen side effects, including wrong coordinates in 2D │\n"
 		"         │ output images from SoFiA (such as moment maps) and inac- │\n"
 		"         │ curate celestial coordinate measurements.                │\n"
+                "         │ It is possible to avoid this problem by regridding the   │\n"
+                "         │ cube to a fixed pixel size before running SoFiA. This    │\n"
+                "         │ can be done with, e.g., MIRIAD's task 'regrid' setting   │\n"
+                "         │ 'options=noscale'. However, note that the regridded cube │\n"
+                "         │ may have a varying beam size (in pixels), which may lead │\n"
+                "         │ to errors in, e.g., the measurement of total fluxes.     │\n"
 		"         └──────────────────────────────────────────────────────────┘\n");
 	}
 	
