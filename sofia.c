@@ -1429,7 +1429,19 @@ int main(int argc, char **argv)
 	{
 		status("Creating cubelets");
 		message("Flux threshold (moment 1 and 2): %.2e", thresh_mom);
-		DataCube_create_cubelets(dataCube, maskCube, catalog, Path_get(path_cubelets), overwrite, use_wcs, use_physical, Parameter_get_int(par, "output.marginCubelets"), thresh_mom, par);
+		DataCube_create_cubelets(
+			dataCube,
+			maskCube,
+			catalog,
+			Path_get(path_cubelets),
+			overwrite,
+			use_wcs,
+			use_physical,
+			Parameter_get_int(par, "output.marginCubelets"),
+			thresh_mom,
+			(use_region && use_pos_offset) ? Array_siz_get(region, 4) : 0,
+			par
+		);
 		
 		// Print time
 		timestamp(start_time, start_clock);

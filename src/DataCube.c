@@ -5402,11 +5402,12 @@ PUBLIC DataCube *DataCube_create_pv(const DataCube *self, const double x0, const
 /// @param  margin     Margin in pixels to be added around each
 ///                    source. If 0, sources will be cut out exactly.
 /// @param  threshold  Flux threshold to be used for moment 1 and 2.
+/// @param  offset_z   Offset to be added to channel numbers in spectrum.
 /// @param  par        SoFiA parameter settings; these will be added
 ///                    to the output FITS file history in the header.
 ///                    If `NULL`, then no history will be written.
 
-PUBLIC void DataCube_create_cubelets(const DataCube *self, const DataCube *mask, const Catalog *cat, const char *basename, const bool overwrite, bool use_wcs, bool physical, const size_t margin, const double threshold, const Parameter *par)
+PUBLIC void DataCube_create_cubelets(const DataCube *self, const DataCube *mask, const Catalog *cat, const char *basename, const bool overwrite, bool use_wcs, bool physical, const size_t margin, const double threshold, const size_t offset_z, const Parameter *par)
 {
 	// Sanity checks
 	check_null(self);
@@ -5733,9 +5734,9 @@ PUBLIC void DataCube_create_cubelets(const DataCube *self, const DataCube *mask,
 			{
 				double spectral = 0.0;
 				WCS_convertToWorld(wcs, 0, 0, j + z_min, NULL, NULL, &spectral);
-				fprintf(fp, "%*zu%*.7e%*.7e%*zu\n", 10, j + z_min, 18, spectral, 18, spectrum[j] / beam_area, 10, pixcount[j]);
+				fprintf(fp, "%*zu%*.7e%*.7e%*zu\n", 10, j + z_min + offset_z, 18, spectral, 18, spectrum[j] / beam_area, 10, pixcount[j]);
 			}
-			else fprintf(fp, "%*zu%*.7e%*zu\n", 10, j + z_min, 18, spectrum[j] / beam_area, 10, pixcount[j]);
+			else fprintf(fp, "%*zu%*.7e%*zu\n", 10, j + z_min + offset_z, 18, spectrum[j] / beam_area, 10, pixcount[j]);
 		}
 		
 		fclose(fp);
