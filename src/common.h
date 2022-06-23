@@ -1,6 +1,6 @@
 // ____________________________________________________________________ //
 //                                                                      //
-// SoFiA 2.5.0 (common.h) - Source Finding Application                  //
+// SoFiA 2.5.1 (common.h) - Source Finding Application                  //
 // Copyright (C) 2022 The SoFiA 2 Authors                               //
 // ____________________________________________________________________ //
 //                                                                      //
@@ -42,8 +42,8 @@
 #include <stdbool.h>
 #include <time.h>
 
-#define SOFIA_VERSION "2.5.0"              ///< SoFiA version number.
-#define SOFIA_VERSION_FULL "SoFiA 2.5.0"   ///< Full SoFiA version string.
+#define SOFIA_VERSION "2.5.1"              ///< SoFiA version number.
+#define SOFIA_VERSION_FULL "SoFiA 2.5.1"   ///< Full SoFiA version string.
 #define SOFIA_CREATION_DATE "24-Jun-2022"  ///< Date of current SoFiA version.
 
 #ifndef M_PI

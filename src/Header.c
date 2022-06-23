@@ -1,6 +1,6 @@
 // ____________________________________________________________________ //
 //                                                                      //
-// SoFiA 2.5.0 (Header.c) - Source Finding Application                  //
+// SoFiA 2.5.1 (Header.c) - Source Finding Application                  //
 // Copyright (C) 2022 The SoFiA 2 Authors                               //
 // ____________________________________________________________________ //
 //                                                                      //
