@@ -1,7 +1,7 @@
 // ____________________________________________________________________ //
 //                                                                      //
-// SoFiA 2.4.1 (LinkerPar.h) - Source Finding Application               //
-// Copyright (C) 2021 The SoFiA 2 Authors                               //
+// SoFiA 2.5.0 (LinkerPar.h) - Source Finding Application               //
+// Copyright (C) 2022 The SoFiA 2 Authors                               //
 // ____________________________________________________________________ //
 //                                                                      //
 // Address:  Tobias Westmeier                                           //

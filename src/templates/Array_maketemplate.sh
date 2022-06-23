@@ -1,8 +1,8 @@
 #!/bin/tcsh
 ### ____________________________________________________________________ ###
 ###                                                                      ###
-### SoFiA 2.4.1 (Array_maketemplate.sh) - Source Finding Application     ###
-### Copyright (C) 2021 The SoFiA 2 Authors                               ###
+### SoFiA 2.5.0 (Array_maketemplate.sh) - Source Finding Application     ###
+### Copyright (C) 2022 The SoFiA 2 Authors                               ###
 ### ____________________________________________________________________ ###
 ###                                                                      ###
 ### Address:  Tobias Westmeier                                           ###
