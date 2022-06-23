@@ -84,7 +84,7 @@ Should you decide to run SoFiA 2 on your own data cubes, we would welcome any fe
 
 ## Copyright and licence
 
-Copyright (C) 2021 The SoFiA 2 Authors
+Copyright (C) 2022 The SoFiA 2 Authors
 
 SoFiA 2 is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
