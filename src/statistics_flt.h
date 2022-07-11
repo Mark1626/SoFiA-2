@@ -45,6 +45,7 @@
 
 #include <stdbool.h>
 #include "common.h"
+#include <immintrin.h>
 
 // -------------------------- //
 // Settings for boxcar filter //
@@ -105,9 +106,12 @@ double kurtosis_flt(const float *data, const size_t size);
 
 // 1D boxcar filter
 void filter_boxcar_1d_flt(float *data, float *data_copy, const size_t size, const size_t filter_radius);
+void filter_boxcar_1d_flt_sse(float *data, const size_t size, const size_t stride, const size_t filter_radius);
+void filter_boxcar_1d_flt_avx(float *data, __m256 *data_copy, const size_t size, const size_t stride, const size_t filter_radius);
 
 // 2D Gaussian filter
 void filter_gauss_2d_flt(float *data, float *data_copy, float *data_row, float *data_col, const size_t size_x, const size_t size_y, const size_t n_iter, const size_t filter_radius);
+void filter_gauss_2d_flt_avx(float *data, __m256 *data_copy, float *data_row, float *data_col, const size_t size_x, const size_t size_y, const size_t n_iter, const size_t filter_radius);
 
 // Polynomial fitting
 void shift_and_subtract_flt(float *data, const size_t size, const size_t shift);

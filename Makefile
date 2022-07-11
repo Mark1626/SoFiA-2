@@ -36,7 +36,7 @@ TEST_OBJ = $(TEST:.c=.o)
 
 # OPENMP = -fopenmp
 OMP     =
-OPT     = --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3
+OPT     = --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -march=native
 LIBS    = -lm -lwcs
 CC      = gcc
 CFLAGS += $(OPT) $(OMP)
