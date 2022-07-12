@@ -1919,7 +1919,7 @@ PUBLIC void DataCube_boxcar_filter(DataCube *self, size_t radius)
 			// Request memory for boxcar filter to operate on
 			// float  *data_box = (float *) memory(MALLOC, self->axis_size[2] + 2 * radius, sizeof(float));
 
-			__m256 *data_box = (__m256 *)memory(MALLOC, self->axis_size[2] + 2 * radius, sizeof(__m256));
+			__m256 *data_box = _mm_malloc((self->axis_size[2] + 2 * radius) * sizeof(__m256), sizeof(__m256));
 
 			float *data = (float *)self->data;
 			size_t stride = self->axis_size[0] * self->axis_size[1];
@@ -1948,7 +1948,7 @@ PUBLIC void DataCube_boxcar_filter(DataCube *self, size_t radius)
 			
 			// Release memory
 			free(spectrum);
-			free(data_box);
+			_mm_free(data_box);
 		}
 	}
 	else
@@ -2033,7 +2033,7 @@ PUBLIC void DataCube_gaussian_filter(DataCube *self, const double sigma)
 			float  *data_row = (float *)memory(MALLOC, self->axis_size[0] + 2 * filter_radius, sizeof(float));
 			float  *data_col = (float *)memory(MALLOC, self->axis_size[1] + 2 * filter_radius, sizeof(float));
 			// Memory for one column
-			__m256 *data_col_8 = (__m256 *)memory(MALLOC, self->axis_size[1] + 2 * filter_radius, sizeof(__m256));
+			__m256 *data_col_8 = _mm_malloc((self->axis_size[1] + 2 * filter_radius) * sizeof(__m256), sizeof(__m256));
 
 			// Apply filter
 			#pragma omp for schedule(static)
@@ -2047,7 +2047,7 @@ PUBLIC void DataCube_gaussian_filter(DataCube *self, const double sigma)
 			// Release memory
 			free(data_row);
 			free(data_col);
-			free(data_col_8);
+			_mm_free(data_col_8);
 			free(column);
 		}
 	}
