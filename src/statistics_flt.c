@@ -46,8 +46,10 @@
 #include <stdint.h>
 #include <string.h>
 
+#ifdef __AVX2__
 #include <immintrin.h>
 #include <xmmintrin.h>
+#endif
 
 #include "statistics_flt.h"
 
