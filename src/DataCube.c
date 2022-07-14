@@ -1917,23 +1917,36 @@ PUBLIC void DataCube_boxcar_filter(DataCube *self, size_t radius)
 			float  *spectrum = (float *)memory(MALLOC, self->axis_size[2], sizeof(float));
 			
 			// Request memory for boxcar filter to operate on
-			// float  *data_box = (float *) memory(MALLOC, self->axis_size[2] + 2 * radius, sizeof(float));
+			float  *data_box = (float *) memory(MALLOC, self->axis_size[2] + 2 * radius, sizeof(float));
 
-			__m256 *data_box = _mm_malloc((self->axis_size[2] + 2 * radius) * sizeof(__m256), sizeof(__m256));
+			#ifdef __AVX2__
+				__m256 *data_box_avx = _mm_malloc((self->axis_size[2] + 2 * radius) * sizeof(__m256), sizeof(__m256));
+				float *data = (float *)self->data;
+				size_t stride = self->axis_size[0] * self->axis_size[1];
+			#endif
 
-			float *data = (float *)self->data;
-			size_t stride = self->axis_size[0] * self->axis_size[1];
+			size_t size_x = self->axis_size[0];
 
 			#pragma omp for schedule(static)
 			for(size_t y = 0; y < self->axis_size[1]; ++y)
 			{
-				for(size_t x = 0; x < self->axis_size[0]; x += 8)
+				size_t start_x = 0;
+
+				#ifdef __AVX2__
+					size_t width = 8;
+					size_t size_x_simd = (size_x / width) * width;
+
+					for(size_t x = 0; x < size_x_simd; x += width)
+					{
+						size_t offset = y * self->axis_size[0] + x;
+						filter_boxcar_1d_flt_avx(data + offset, data_box_avx, self->axis_size[2], stride, radius);
+					}
+
+					start_x = size_x_simd;
+				#endif
+
+				for(size_t x = start_x; x < size_x; x++)
 				{
-					size_t offset = y * self->axis_size[0] + x;
-
-					filter_boxcar_1d_flt_avx(data + offset, data_box, self->axis_size[2], stride, radius);
-					/*
-
 					// Extract spectrum
 					for(size_t z = self->axis_size[2]; z--;) *(spectrum + z) = DataCube_get_data_flt(self, x, y, z);
 					
@@ -1942,13 +1955,15 @@ PUBLIC void DataCube_boxcar_filter(DataCube *self, size_t radius)
 					
 					// Copy filtered spectrum back into array
 					for(size_t z = self->axis_size[2]; z--;) DataCube_set_data_flt(self, x, y, z, *(spectrum + z));
-					*/
 				}
 			}
 			
 			// Release memory
 			free(spectrum);
-			_mm_free(data_box);
+			free(data_box);
+			#ifdef __AVX2__
+				_mm_free(data_box_avx);
+			#endif
 		}
 	}
 	else
@@ -2033,21 +2048,29 @@ PUBLIC void DataCube_gaussian_filter(DataCube *self, const double sigma)
 			float  *data_row = (float *)memory(MALLOC, self->axis_size[0] + 2 * filter_radius, sizeof(float));
 			float  *data_col = (float *)memory(MALLOC, self->axis_size[1] + 2 * filter_radius, sizeof(float));
 			// Memory for one column
-			__m256 *data_col_8 = _mm_malloc((self->axis_size[1] + 2 * filter_radius) * sizeof(__m256), sizeof(__m256));
+
+			#ifdef __AVX2__
+				__m256 *data_col_8 = _mm_malloc((self->axis_size[1] + 2 * filter_radius) * sizeof(__m256), sizeof(__m256));
+			#endif
 
 			// Apply filter
 			#pragma omp for schedule(static)
 			for(char *ptr = self->data; ptr < self->data + self->data_size * self->word_size; ptr += size)
 			{
-				// filter_gauss_2d_flt((float *)ptr, column, data_row, data_col, self->axis_size[0], self->axis_size[1], n_iter, filter_radius);
+				#ifdef __AVX2__
 
-				filter_gauss_2d_flt_avx((float *)ptr, data_col_8, data_row, data_col, self->axis_size[0], self->axis_size[1], n_iter, filter_radius);
+					filter_gauss_2d_flt_avx((float *)ptr, data_col_8, data_row, data_col, self->axis_size[0], self->axis_size[1], n_iter, filter_radius);
+				#else
+					filter_gauss_2d_flt((float *)ptr, column, data_row, data_col, self->axis_size[0], self->axis_size[1], n_iter, filter_radius);
+				#endif
 			}
 			
 			// Release memory
 			free(data_row);
 			free(data_col);
-			_mm_free(data_col_8);
+			#ifdef __AVX2__
+				_mm_free(data_col_8);
+			#endif
 			free(column);
 		}
 	}

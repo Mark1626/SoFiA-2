@@ -1091,6 +1091,7 @@ void filter_boxcar_1d_flt(float *data, float *data_copy, const size_t size, cons
 
 
 
+#ifdef __AVX2__
 static inline __m128 filter_nan_sse(__m128 data_v) {
 	// Filter nan
 	__m128 nan_mask = _mm_cmpord_ps(data_v, data_v);
@@ -1200,6 +1201,7 @@ void filter_boxcar_1d_flt_avx(float *data, __m256 *data_copy, const size_t size,
 
 	return;
 }
+#endif
 
 
 
@@ -1309,11 +1311,13 @@ void filter_gauss_2d_flt(float *data, float *data_copy, float *data_row, float *
 
 
 
-void filter_gauss_2d_flt_avx(float *data, __m256 *data_copy, float *data_row, float *data_col, const size_t size_x, const size_t size_y, const size_t n_iter, const size_t filter_radius)
+#ifdef __AVX2__
+void filter_gauss_2d_flt_avx(float *data, __m256 *data_col_copy, float *data_copy, float *data_col, const size_t size_x, const size_t size_y, const size_t n_iter, const size_t filter_radius)
 {
 	// Set up a few variables
 	const size_t size_xy = size_x * size_y;
 	float *ptr = data + size_xy;
+	float *ptr2;
 
 	// Run row filter (along x-axis)
 	// This is straightforward, as the data are contiguous in x.
@@ -1321,20 +1325,49 @@ void filter_gauss_2d_flt_avx(float *data, __m256 *data_copy, float *data_row, fl
 	{
 		ptr -= size_x;
 		for (size_t i = n_iter; i--;)
-			filter_boxcar_1d_flt(ptr, data_row, size_x, filter_radius);
+			filter_boxcar_1d_flt(ptr, data_copy, size_x, filter_radius);
 	}
 
-	for (size_t x = 0; x < size_x; x += 8)
+	size_t stride = 8;
+	size_t size_x_avx = (size_x / stride) * stride;
+
+	for (size_t x = 0; x < size_x_avx; x += stride)
 	{
 		// Apply filter
 		for (size_t i = n_iter; i--;)
 		{
-			filter_boxcar_1d_flt_avx(data + x, data_copy, size_y, size_x, filter_radius);
+			filter_boxcar_1d_flt_avx(data + x, data_col_copy, size_y, size_x, filter_radius);
+		}
+	}
+
+	// Process remaining points when size_x % 8 != 0
+	// At max this will processes 7 points
+	for (size_t x = size_x_avx; x < size_x; x++) {
+		// Copy data into column array
+		ptr = data + size_xy - size_x + x;
+		ptr2 = data_copy + size_y;
+		while(ptr2 --> data_copy)
+		{
+			*ptr2 = *ptr;
+			ptr -= size_x;
+		}
+		
+		// Apply filter
+		for(size_t i = n_iter; i--;) filter_boxcar_1d_flt(data_copy, data_col, size_y, filter_radius);
+		
+		// Copy column array back into data array
+		ptr = data + size_xy - size_x + x;
+		ptr2 = data_copy + size_y;
+		while(ptr2 --> data_copy)
+		{
+			*ptr = *ptr2;
+			ptr -= size_x;
 		}
 	}
 	
 	return;
 }
+#endif
 
 
 

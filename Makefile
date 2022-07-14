@@ -1,11 +1,12 @@
 # Makefile for the compilation of SoFiA 2
 #
 # Usage examples:
-#   make                               for GCC or Clang without OpenMP
-#   make OMP=-fopenmp                  for GCC or Clang with OpenMP
-#   make CC=icc OPT=-O3 OMP=-openmp    for Intel C Compiler with OpenMP (not tested)
-#   make clean                         remove object files after compilation
-#   make DEBUG=1                       for debug mode (no compiler optimisations)
+#   make                                        for GCC or Clang without OpenMP
+#   make OMP=-fopenmp                           for GCC or Clang with OpenMP
+#   make OMP=-fopenmp OPT="-O3 -march=native"   for SIMD optimization, if available in host
+#   make CC=icc OPT=-O3 OMP=-openmp             for Intel C Compiler with OpenMP (not tested)
+#   make clean                                  remove object files after compilation
+#   make DEBUG=1                                for debug mode (no compiler optimisations)
 
 
 SRC = src/Array_dbl.c \
@@ -36,7 +37,7 @@ TEST_OBJ = $(TEST:.c=.o)
 
 # OPENMP = -fopenmp
 OMP     =
-OPT     = --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -march=native
+OPT     = --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3
 LIBS    = -lm -lwcs
 CC      = gcc
 CFLAGS += $(OPT) $(OMP)
