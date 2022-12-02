@@ -36,7 +36,7 @@ TEST = tests/test_LinkerPar.c
 TEST_OBJ = $(TEST:.c=.o)
 
 # OPENMP = -fopenmp
-OMP     =
+OMP     = -Xpreprocessor -fopenmp -lomp
 OPT     = --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3
 LIBS    = -lm -lwcs
 CC      = gcc
