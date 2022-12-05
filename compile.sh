@@ -42,47 +42,68 @@ echo " Installing SoFiA"
 echo "_______________________________________________________________________"
 echo
 
+# defining march and omp flags
+OS=$(uname -s)
+
+if [ $OS = "Linux" ]
+then
+    OMP=-fopenmp
+elif [ $OS = "Darwin" ] 
+then
+    OMP="-Xpreprocessor -fopenmp -lomp"
+fi
+
+processor=$(uname -m)
+
+if [ $processor = "arm64" ]
+then
+    ARCH_C_FLAGS="-march=armv8-a+fp+simd+crc"
+elif [ $processor = "x86_64" ]
+then
+    ARCH_C_FLAGS="-march=native" 
+fi
+
 # Compile source files
 echo "  Compiling src/common.c"
-gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/common.o -c src/common.c
+gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/common.o -c src/common.c $OMP $ARCH_C_FLAGS 
 echo "  Compiling src/statistics_flt.c"
-gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/statistics_flt.o -c src/statistics_flt.c
+gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/statistics_flt.o -c src/statistics_flt.c $OMP $ARCH_C_FLAGS
 echo "  Compiling src/statistics_dbl.c"
-gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/statistics_dbl.o -c src/statistics_dbl.c
+gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/statistics_dbl.o -c src/statistics_dbl.c $OMP $ARCH_C_FLAGS
 echo "  Compiling src/Table.c"
-gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/Table.o -c src/Table.c
+gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/Table.o -c src/Table.c $OMP $ARCH_C_FLAGS
 echo "  Compiling src/String.c"
-gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/String.o -c src/String.c
+gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/String.o -c src/String.c $OMP $ARCH_C_FLAGS
 echo "  Compiling src/Stack.c"
-gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/Stack.o -c src/Stack.c
+gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/Stack.o -c src/Stack.c $OMP $ARCH_C_FLAGS
 echo "  Compiling src/Path.c"
-gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/Path.o -c src/Path.c
+gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/Path.o -c src/Path.c $OMP $ARCH_C_FLAGS
 echo "  Compiling src/Array_dbl.c"
-gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/Array_dbl.o -c src/Array_dbl.c
+gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/Array_dbl.o -c src/Array_dbl.c $OMP $ARCH_C_FLAGS
 echo "  Compiling src/Array_siz.c"
-gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/Array_siz.o -c src/Array_siz.c
+gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/Array_siz.o -c src/Array_siz.c $OMP $ARCH_C_FLAGS
 echo "  Compiling src/Map.c"
-gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/Map.o -c src/Map.c
+gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/Map.o -c src/Map.c $OMP $ARCH_C_FLAGS
 echo "  Compiling src/Matrix.c"
-gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/Matrix.o -c src/Matrix.c
+gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/Matrix.o -c src/Matrix.c $OMP $ARCH_C_FLAGS
 echo "  Compiling src/LinkerPar.c"
-gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/LinkerPar.o -c src/LinkerPar.c $@
+gcc $OMP $ARCH_C_FLAGS --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/LinkerPar.o -c src/LinkerPar.c $@
 echo "  Compiling src/Parameter.c"
-gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/Parameter.o -c src/Parameter.c
+gcc $OMP $ARCH_C_FLAGS --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/Parameter.o -c src/Parameter.c
 echo "  Compiling src/Source.c"
-gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/Source.o -c src/Source.c
+gcc $OMP $ARCH_C_FLAGS --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/Source.o -c src/Source.c
 echo "  Compiling src/Catalog.c"
-gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/Catalog.o -c src/Catalog.c
+gcc $OMP $ARCH_C_FLAGS --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/Catalog.o -c src/Catalog.c
 echo "  Compiling src/Flagger.c"
-gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/Flagger.o -c src/Flagger.c
+gcc $OMP $ARCH_C_FLAGS --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/Flagger.o -c src/Flagger.c
 echo "  Compiling src/WCS.c"
-gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/WCS.o -c src/WCS.c
+gcc $OMP $ARCH_C_FLAGS --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/WCS.o -c src/WCS.c
 echo "  Compiling src/Header.c"
-gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/Header.o -c src/Header.c
+gcc $OMP $ARCH_C_FLAGS --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/Header.o -c src/Header.c
 echo "  Compiling src/DataCube.c"
-gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/DataCube.o -c src/DataCube.c $@
+gcc $OMP $ARCH_C_FLAGS --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o src/DataCube.o -c src/DataCube.c $@
 echo "  Compiling sofia.c"
-gcc --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o sofia src/common.o src/statistics_flt.o src/statistics_dbl.o src/Table.o src/String.o src/Stack.o src/Path.o src/Array_dbl.o src/Array_siz.o src/Map.o src/Matrix.o src/LinkerPar.o src/Parameter.o src/Flagger.o src/WCS.o src/Header.o src/DataCube.o src/Source.o src/Catalog.o sofia.c -lm -lwcs $@
+gcc $OMP $ARCH_C_FLAGS --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3 -o sofia src/common.o src/statistics_flt.o src/statistics_dbl.o src/Table.o src/String.o src/Stack.o src/Path.o src/Array_dbl.o src/Array_siz.o src/Map.o src/Matrix.o src/LinkerPar.o src/Parameter.o src/Flagger.o src/WCS.o src/Header.o src/DataCube.o src/Source.o src/Catalog.o sofia.c -lm -lwcs $@
 
 # Remove object files
 #rm -rf src/*.o

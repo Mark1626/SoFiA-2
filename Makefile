@@ -8,6 +8,20 @@
 #   make clean                                  remove object files after compilation
 #   make DEBUG=1                                for debug mode (no compiler optimisations)
 
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+	OMP += -fopenmp
+else ifeq ($(UNAME_S),Darwin)
+	OMP += -Xpreprocessor -fopenmp -lomp
+endif
+
+processor := $(shell uname -m)
+ifeq ($(processor),$(filter $(processor),aarch64 arm64))
+    ARCH_C_FLAGS += -march=armv8-a+fp+simd+crc 
+else ifeq ($(processor),$(filter $(processor),i386 x86_64))
+    ARCH_C_FLAGS += -march=native 
+endif
+
 
 SRC = src/Array_dbl.c \
       src/Array_siz.c \
@@ -36,14 +50,14 @@ TEST = tests/test_LinkerPar.c
 TEST_OBJ = $(TEST:.c=.o)
 
 # OPENMP = -fopenmp
-OMP     = -Xpreprocessor -fopenmp -lomp
+# OMP     = -Xpreprocessor -fopenmp -lomp
 OPT     = --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3
 LIBS    = -lm -lwcs
 CC      = gcc
-CFLAGS += $(OPT) $(OMP)
+CFLAGS += $(OPT) $(OMP) $(ARCH_C_FLAGS)
 
 ifdef DEBUG
-OPT     = -g -O0
+OPT     = -g -O0 -fsanitize=address
 endif
 
 all:	sofia
