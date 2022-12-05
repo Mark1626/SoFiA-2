@@ -10,3 +10,6 @@ Docs
 html*
 .vscode
 .history
+
+expected_output/
+reference_output/

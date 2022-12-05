@@ -2058,8 +2058,9 @@ PUBLIC void DataCube_gaussian_filter(DataCube *self, const double sigma)
 			for(char *ptr = self->data; ptr < self->data + self->data_size * self->word_size; ptr += size)
 			{
 				#ifdef __AVX2__
-
 					filter_gauss_2d_flt_avx((float *)ptr, data_col_8, data_row, data_col, self->axis_size[0], self->axis_size[1], n_iter, filter_radius);
+				#elif __ARM_NEON__
+					filter_gauss_2d_neon((float *)ptr, NULL, data_row, NULL, self->axis_size[0], self->axis_size[1], n_iter, filter_radius);
 				#else
 					filter_gauss_2d_flt((float *)ptr, column, data_row, data_col, self->axis_size[0], self->axis_size[1], n_iter, filter_radius);
 				#endif

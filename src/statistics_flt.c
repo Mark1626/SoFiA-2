@@ -48,7 +48,10 @@
 
 #ifdef __AVX2__
 #include <immintrin.h>
-#include <xmmintrin.h>
+#endif
+
+#ifdef __aarch64__
+#include <arm_neon.h>
 #endif
 
 #include "statistics_flt.h"
@@ -1371,6 +1374,118 @@ void filter_gauss_2d_flt_avx(float *data, __m256 *data_col_copy, float *data_cop
 }
 #endif
 
+
+#if defined(__ARM_NEON__)
+static inline float32x4_t filter_nan_neon(float32x4_t data_v) {
+  // Filter nan
+  uint32x4_t nan_mask = vceqq_f32(data_v, data_v);
+  float32x4_t zero_v = vdupq_n_f32(0);
+  float32x4_t data_filtered_v = vbslq_f32(nan_mask, data_v, zero_v);
+  return data_filtered_v;
+}
+
+void filter_simd_neon(float *data, const size_t size, const size_t stride,
+                      const size_t filter_radius) {
+  const size_t filter_size = 2 * filter_radius + 1;
+  size_t i;
+
+  const float inv_filter_size = 1.0 / filter_size;
+  float32x4_t inv_filter_size_v = vdupq_n_f32(inv_filter_size);
+
+  float32x4_t zero_v = vdupq_n_f32(0);
+
+  float32x4_t *data_copy =
+      (float32x4_t *)malloc(sizeof(float32x4_t) * (size + 2 * filter_radius));
+
+  for (i = size; i--;)
+    data_copy[filter_radius + i] =
+        filter_nan_neon(vld1q_f32(data + (stride * i)));
+
+  for (i = filter_radius; i--;)
+    data_copy[i] = data_copy[size + filter_radius + i] = zero_v;
+
+  // Calculate last point
+  float32x4_t last_pt = zero_v;
+  for (i = filter_size; i--;) {
+    last_pt = vaddq_f32(last_pt, data_copy[size + i - 1]);
+  }
+  last_pt = vmulq_f32(last_pt, inv_filter_size_v);
+  vst1q_f32(data + (stride * (size - 1)), last_pt);
+
+  float32x4_t next_pt = last_pt;
+  for (int col = size - 1; col--;) {
+    float32x4_t current_pt =
+        vsubq_f32(data_copy[col], data_copy[filter_size + col]);
+    current_pt = vmulq_f32(current_pt, inv_filter_size_v);
+    current_pt = vaddq_f32(next_pt, current_pt);
+
+    vst1q_f32(data + (stride * col), current_pt);
+
+    next_pt = current_pt;
+  }
+
+  free(data_copy);
+
+  return;
+}
+
+void filter_gauss_2d_neon(float *data, float *data_copy, float *data_row,
+                          float *data_col, const size_t size_x,
+                          const size_t size_y, const size_t n_iter,
+                          const size_t filter_radius) {
+  // Set up a few variables
+  const size_t size_xy = size_x * size_y;
+  float *ptr = data + size_xy;
+
+  // Run row filter (along x-axis)
+  // This is straightforward, as the data are contiguous in x.
+  while (ptr > data) {
+    ptr -= size_x;
+    for (size_t i = n_iter; i--;)
+    filter_boxcar_1d_flt(ptr, data_row, size_x, filter_radius);
+  }
+
+  size_t quot = size_x / 4;
+  size_t limit = quot * 4;
+  for (size_t x = 0; x < limit; x += 4) {
+    // Apply filter
+    for (size_t i = n_iter; i--;) 
+    filter_simd_neon(data + x, size_y, size_x, filter_radius);
+    
+  }
+
+  float *ptr2;
+  data_copy = (float *)malloc(sizeof(float) * size_y);
+  data_col = (float *)malloc(sizeof(float) * (size_y + 2 * filter_radius));
+
+  for (size_t x = size_x; x > limit; x--) {
+    // Copy data into column array
+    ptr = data + size_xy - size_x + x - 1;
+    ptr2 = data_copy + size_y;
+    while (ptr2-- > data_copy) {
+      *ptr2 = *ptr;
+      ptr -= size_x;
+    }
+
+    // Apply filter
+    for (size_t i = n_iter; i--;)
+    filter_boxcar_1d_flt(data_copy, data_col, size_y, filter_radius);
+
+    // Copy column array back into data array
+    ptr = data + size_xy - size_x + x - 1;
+    ptr2 = data_copy + size_y;
+    while (ptr2-- > data_copy) {
+      *ptr = *ptr2;
+      ptr -= size_x;
+    }
+  }
+
+  free(data_copy);
+  free(data_col);
+
+  return;
+}
+#endif
 
 
 /// @brief Shift and subtract data from itself
