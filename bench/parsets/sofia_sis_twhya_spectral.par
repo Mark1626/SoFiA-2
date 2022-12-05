@@ -102,7 +102,7 @@ linker.keepNegative        =  false
 
 # Reliability
 
-reliability.enable         =  true
+reliability.enable         =  false
 reliability.parameters     =  peak, sum, mean
 reliability.threshold      =  0.9
 reliability.scaleKernel    =  0.4

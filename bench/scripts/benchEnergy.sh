@@ -7,7 +7,8 @@ declare -a CASES=(GOLDEN AVX)
 
 host=$1
 parFile=$2
-mkdir -p stat/$host/energy
+outputDir=bench/stat/$host/energy
+mkdir -p $outputDir
 
 AWK=awk
 
@@ -28,22 +29,21 @@ function pattern() {
 
 i=0
 
-rm -f stat/$host/energy/${parFile}-stats.csv
+rm -f $outputDir/${parFile}-stats.csv
 for case in ${CASES[@]}
 do  
-      rm -f stat/$host/energy/${parFile}-${case}-result.txt
+      rm -f $outputDir/${parFile}-${case}-result.txt
       
-      echo "Running ${case}" >> stat/$host/energy/${parFile}-${case}-result.txt 
+      echo "Running ${case}" >> $outputDir/${parFile}-${case}-result.txt 
 
       make all BENCH_FLAGS="-DNGOLDEN -DNAVX -UN$method"
 
-      perf stat -e power/energy-pkg/ ./sofia parsers/${parFile} &>> stat/$host/energy/${parFile}-${case}-result.txt 
+      perf stat -e power/energy-pkg/ ./sofia bench/parsets/${parFile} &>> $outputDir/${parFile}-${case}-result.txt 
 
       PATTERN=`pattern $i $case`
       ((i+=1))
-      cat stat/$host/energy/${parFile}-${case}-result.txt | $AWK "$PATTERN" >> stat/$host/energy/${parFile}-stats.csv
+      cat $outputDir/${parFile}-${case}-result.txt | $AWK "$PATTERN" >> $outputDir/${parFile}-stats.csv
 done
-
 
 echo "                                            \
   reset;                                          \
@@ -57,5 +57,5 @@ echo "                                            \
   set boxwidth 0.5;                                       \
   set style fill solid;                                \
                                                         \
-  plot \"stat/$host/energy/${parFile}-stats.csv\" using 1:3:xtic(2) with boxes; \
-" | gnuplot > stat/$host/energy/${parFile}-performance.png
+  plot \"$outputDir/${parFile}-stats.csv\" using 1:3:xtic(2) with boxes; \
+" | gnuplot > $outputDir/${parFile}-performance.png
