@@ -37,7 +37,7 @@ do
 
       make all BENCH_FLAGS="-DNGOLDEN -DNAVX -UN$method"
 
-      perf stat -e power/energy-pkg/ ./sofia parser/${parFile} &>> stat/$host/energy/${parFile}-${case}-result.txt 
+      perf stat -e power/energy-pkg/ ./sofia parsers/${parFile} &>> stat/$host/energy/${parFile}-${case}-result.txt 
 
       PATTERN=`pattern $i $case`
       ((i+=1))
