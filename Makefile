@@ -63,10 +63,10 @@ endif
 all:	sofia
 
 sofia:	$(OBJ)
-	$(CC) $(CFLAGS) -o sofia sofia.c $(OBJ) $(LIBS)
+	$(CC) $(CFLAGS) -o sofia sofia.c $(OBJ) $(LIBS) $(BENCH_FLAGS)
 
 unittest:	$(OBJ) $(TEST_OBJ)
-	$(CC) $(CFLAGS) -o unittest tests/unittest.c $(TEST_OBJ) $(OBJ) $(LIBS) `pkg-config --cflags --libs check`
+	$(CC) $(CFLAGS) -o unittest tests/unittest.c $(TEST_OBJ) $(OBJ) $(LIBS) `pkg-config --cflags --libs check` $(BENCH_FLAGS)
 
 clean:
 	rm -rf $(OBJ) $(TEST_OBJ)

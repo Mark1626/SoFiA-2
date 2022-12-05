@@ -13,3 +13,6 @@ html*
 
 expected_output/
 reference_output/
+
+*.par
+*.gz
