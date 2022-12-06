@@ -7,7 +7,7 @@ Running NEON
   Using:    Source Finding Application (SoFiA)
   Version:  2.5.1 (24-Jun-2022)
   CPU:      10 threads available
-  Time:     Tue Dec  6 21:34:29 2022
+  Time:     Tue Dec  6 22:25:26 2022
 
 [36m____________________________________________________________________________[0;1m
 
@@ -78,7 +78,7 @@ Running NEON
   Noise level:       1.278e-03
 
 [36m  Elapsed time: 00:00:01 h
-  CPU time:     00:00:04 h[0m
+  CPU time:     00:00:03 h[0m
 
   Smoothing kernel:  [0.0] x [15]
   Noise level:       9.471e-04
@@ -96,7 +96,7 @@ Running NEON
   Noise level:       1.136e-03
 
 [36m  Elapsed time: 00:00:03 h
-  CPU time:     00:00:13 h[0m
+  CPU time:     00:00:12 h[0m
 
   Smoothing kernel:  [5.0] x [7]
   Noise level:       7.963e-04
@@ -183,7 +183,7 @@ Running NEON
   1 reliable source found.
 
 [36m  Elapsed time: 00:00:10 h
-  CPU time:     00:00:47 h[0m
+  CPU time:     00:00:46 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -193,7 +193,7 @@ Running NEON
   Initial source catalogue created.
 
 [36m  Elapsed time: 00:00:10 h
-  CPU time:     00:00:47 h[0m
+  CPU time:     00:00:46 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -209,7 +209,7 @@ Running NEON
 
 
 [36m  Elapsed time: 00:00:10 h
-  CPU time:     00:00:47 h[0m
+  CPU time:     00:00:46 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -224,7 +224,7 @@ Running NEON
   Creating FITS file: sofia_test_output_chan.fits
 
 [36m  Elapsed time: 00:00:10 h
-  CPU time:     00:00:48 h[0m
+  CPU time:     00:00:47 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -234,8 +234,8 @@ Running NEON
   Creating FITS file: sofia_test_output_mask-2d.fits
   Creating FITS file: sofia_test_output_mask.fits
 
-[36m  Elapsed time: 00:00:12 h
-  CPU time:     00:00:50 h[0m
+[36m  Elapsed time: 00:00:11 h
+  CPU time:     00:00:49 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -245,8 +245,8 @@ Running NEON
   Writing ASCII file:   sofia_test_output_cat.txt
   Writing VOTable file: sofia_test_output_cat.xml
 
-[36m  Elapsed time: 00:00:12 h
-  CPU time:     00:00:50 h[0m
+[36m  Elapsed time: 00:00:11 h
+  CPU time:     00:00:49 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -254,4 +254,4 @@ Running NEON
 [0;36m____________________________________________________________________________[0m
 
 
-Time elapsed ms: 11378 ms
+Time elapsed ms: 10820 ms

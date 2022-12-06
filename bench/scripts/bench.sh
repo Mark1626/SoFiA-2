@@ -51,10 +51,10 @@ do
       make all "OMP=-Xpreprocessor -fopenmp -lomp" $FLAG
 
     # start time
-      startTime=`gdate +%S%3N`;
+      startTime=`gdate +%H%M%S%3N`;
       ./sofia bench/parsets/${parFile} >> $outputDir/${parFile}-${case}-result.txt 
     #end time
-      endTime=`gdate +%S%3N`;
+      endTime=`gdate +%H%M%S%3N`;
 
       diffMicroSeconds="$(($endTime-$startTime))"
 

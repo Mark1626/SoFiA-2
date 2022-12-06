@@ -7,7 +7,7 @@ Running NEON
   Using:    Source Finding Application (SoFiA)
   Version:  2.5.1 (24-Jun-2022)
   CPU:      10 threads available
-  Time:     Tue Dec  6 21:08:34 2022
+  Time:     Tue Dec  6 22:22:58 2022
 
 [36m____________________________________________________________________________[0;1m
 
@@ -252,4 +252,4 @@ Running NEON
 [0;36m____________________________________________________________________________[0m
 
 
-Time elapsed ms: 152 ms
+Time elapsed ms: 149 ms

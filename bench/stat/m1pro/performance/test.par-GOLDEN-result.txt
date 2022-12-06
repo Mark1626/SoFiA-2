@@ -7,7 +7,7 @@ Running GOLDEN
   Using:    Source Finding Application (SoFiA)
   Version:  2.5.1 (24-Jun-2022)
   CPU:      10 threads available
-  Time:     Tue Dec  6 21:07:42 2022
+  Time:     Tue Dec  6 22:21:07 2022
 
 [36m____________________________________________________________________________[0;1m
 
@@ -254,4 +254,4 @@ Running GOLDEN
 [0;36m____________________________________________________________________________[0m
 
 
-Time elapsed ms: 711 ms
+Time elapsed ms: 477 ms
