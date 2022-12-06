@@ -3,11 +3,17 @@
 set -e
 set -x
 
-declare -a CASES=(GOLDEN AVX2)
+processor=`uname -m`
+simdCase=AVX2
+if [ $processor = "arm64" ]
+then
+    simdCase=ARM_NEON
+fi
+declare -a CASES=(GOLDEN $simdCase)
 
 host=$1
 parFile=$2
-outputDir=bench/stat/$host/energy
+outputDir=bench/stat/$host/performance
 mkdir -p $outputDir
 
 AWK=awk
@@ -16,12 +22,9 @@ function pattern() {
   id=$1
   label=$2
   PATTERN="
-  /energy-pkg/ {
-    energy = \$1;
-  }
-  /seconds time elapsed/ {
-    time = \$1;
-    printf(\"%s %s %s %s\n\", $id, \"$label\", energy, time);
+  /Time elapsed us/ {
+    time = \$(NF - 1);
+    printf(\"%s %s %s\n\", $id, \"$label\", time);
   }
   "
   echo $PATTERN
@@ -36,9 +39,19 @@ do
       
       echo "Running ${case}" >> $outputDir/${parFile}-${case}-result.txt 
 
-      make all BENCH_FLAGS="-DNAVX2 -UN$case"
+      make clean
+      make all BENCH_FLAGS="-DNAVX2 -DNARM_NEON -UN$case"
 
-      perf stat -e power/energy-pkg/ ./sofia bench/parsets/${parFile} &>> $outputDir/${parFile}-${case}-result.txt 
+    # start time
+      startTime=`gdate +%S%6N`;
+      ./sofia bench/parsets/${parFile} >> $outputDir/${parFile}-${case}-result.txt 
+    #end time
+      endTime=`gdate +%S%6N`;
+
+      diffMicroSeconds="$(($endTime-$startTime))"
+
+      echo  >> $outputDir/${parFile}-${case}-result.txt 
+      echo "Time elapsed us: $diffMicroSeconds us" >> $outputDir/${parFile}-${case}-result.txt 
 
       PATTERN=`pattern $i $case`
       ((i+=1))
@@ -49,10 +62,10 @@ echo "                                            \
   reset;                                          \
   set terminal png enhanced large; \
                                                         \
-  set title \"Sofia Benchmark\";                        \
+  set title \"Sofia Performance Benchmark\";                        \
   set xlabel \"Matrix Dim\";                             \
-  set ylabel \"Joules\";                     \
-  set yrange [0:500];                 \
+  set ylabel \"Time elapsed (us)\";                     \
+  set yrange [0:500000];                 \
   unset key;                                      \
   set boxwidth 0.5;                                       \
   set style fill solid;                                \

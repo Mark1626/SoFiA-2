@@ -54,7 +54,7 @@ TEST_OBJ = $(TEST:.c=.o)
 OPT     = --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3
 LIBS    = -lm -lwcs
 CC      = gcc
-CFLAGS += $(OPT) $(OMP) $(ARCH_C_FLAGS)
+CFLAGS += $(OPT) $(OMP) $(ARCH_C_FLAGS) $(BENCH_FLAGS)
 
 ifdef DEBUG
 OPT     = -g -O0 -fsanitize=address
@@ -63,10 +63,10 @@ endif
 all:	sofia
 
 sofia:	$(OBJ)
-	$(CC) $(CFLAGS) -o sofia sofia.c $(OBJ) $(LIBS) $(BENCH_FLAGS)
+	$(CC) $(CFLAGS) -o sofia sofia.c $(OBJ) $(LIBS)
 
 unittest:	$(OBJ) $(TEST_OBJ)
-	$(CC) $(CFLAGS) -o unittest tests/unittest.c $(TEST_OBJ) $(OBJ) $(LIBS) `pkg-config --cflags --libs check` $(BENCH_FLAGS)
+	$(CC) $(CFLAGS) -o unittest tests/unittest.c $(TEST_OBJ) $(OBJ) $(LIBS) `pkg-config --cflags --libs check`
 
 clean:
 	rm -rf $(OBJ) $(TEST_OBJ)
