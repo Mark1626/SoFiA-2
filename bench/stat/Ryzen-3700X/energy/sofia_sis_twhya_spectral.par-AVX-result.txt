@@ -7,7 +7,7 @@ Running AVX
   Using:    Source Finding Application (SoFiA)
   Version:  2.5.1 (24-Jun-2022)
   CPU:      16 threads available
-  Time:     Mon Dec  5 18:03:24 2022
+  Time:     Tue Dec  6 15:50:31 2022
 
 [36m____________________________________________________________________________[0;1m
 
@@ -95,7 +95,7 @@ Running AVX
   Smoothing kernel:  [5.0] x [3]
   Noise level:       1.706e-02
 
-[36m  Elapsed time: 00:00:00 h
+[36m  Elapsed time: 00:00:01 h
   CPU time:     00:00:05 h[0m
 
   Smoothing kernel:  [5.0] x [7]
@@ -120,7 +120,7 @@ Running AVX
   Noise level:       1.364e-02
 
 [36m  Elapsed time: 00:00:01 h
-  CPU time:     00:00:10 h[0m
+  CPU time:     00:00:11 h[0m
 
   Smoothing kernel:  [10.0] x [7]
   Noise level:       1.330e-02
@@ -142,7 +142,7 @@ Running AVX
   142862 pixels detected by source finder (0.568%).
 
 [36m  Elapsed time: 00:00:01 h
-  CPU time:     00:00:13 h[0m
+  CPU time:     00:00:14 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -163,7 +163,7 @@ Running AVX
 
 
 [36m  Elapsed time: 00:00:01 h
-  CPU time:     00:00:13 h[0m
+  CPU time:     00:00:14 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -173,7 +173,7 @@ Running AVX
   Initial source catalogue created.
 
 [36m  Elapsed time: 00:00:01 h
-  CPU time:     00:00:13 h[0m
+  CPU time:     00:00:14 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -187,7 +187,7 @@ Running AVX
 
 
 [36m  Elapsed time: 00:00:01 h
-  CPU time:     00:00:13 h[0m
+  CPU time:     00:00:14 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -202,7 +202,7 @@ Running AVX
   Creating FITS file: sofia_test_output_chan.fits
 
 [36m  Elapsed time: 00:00:01 h
-  CPU time:     00:00:13 h[0m
+  CPU time:     00:00:14 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -212,7 +212,7 @@ Running AVX
   Creating FITS file: sofia_test_output_mask-2d.fits
   Creating FITS file: sofia_test_output_mask.fits
 
-[36m  Elapsed time: 00:00:01 h
+[36m  Elapsed time: 00:00:02 h
   CPU time:     00:00:15 h[0m
 
 [36m____________________________________________________________________________[0;1m
@@ -223,7 +223,7 @@ Running AVX
   Writing ASCII file:   sofia_test_output_cat.txt
   Writing VOTable file: sofia_test_output_cat.xml
 
-[36m  Elapsed time: 00:00:01 h
+[36m  Elapsed time: 00:00:02 h
   CPU time:     00:00:15 h[0m
 
 [36m____________________________________________________________________________[0;1m
@@ -234,7 +234,7 @@ Running AVX
 
  Performance counter stats for 'system wide':
 
-             96.12 Joules power/energy-pkg/                                           
+             97.48 Joules power/energy-pkg/                                           
 
-       1.653994534 seconds time elapsed
+       1.657115394 seconds time elapsed
 
