@@ -4,10 +4,10 @@ set -e
 set -x
 
 processor=`uname -m`
-simdCase=AVX2
+simdCase=AVX
 if [ $processor = "arm64" ]
 then
-    simdCase=ARM_NEON
+    simdCase=NEON
 fi
 declare -a CASES=(GOLDEN $simdCase)
 
@@ -15,6 +15,7 @@ host=$1
 parFile=$2
 outputDir=bench/stat/$host/performance
 mkdir -p $outputDir
+FLAG=""
 
 AWK=awk
 
@@ -22,7 +23,7 @@ function pattern() {
   id=$1
   label=$2
   PATTERN="
-  /Time elapsed us/ {
+  /Time elapsed ms/ {
     time = \$(NF - 1);
     printf(\"%s %s %s\n\", $id, \"$label\", time);
   }
@@ -35,23 +36,30 @@ i=0
 rm -f $outputDir/${parFile}-stats.csv
 for case in ${CASES[@]}
 do  
+    if [ $case = "AVX" ]
+    then
+        FLAG="ARCH=-march=native"
+    elif [ $case = "NEON" ]
+    then 
+        FLAG="ARCH=-march=armv8-a+fp+simd+crc"
+      fi
       rm -f $outputDir/${parFile}-${case}-result.txt
       
       echo "Running ${case}" >> $outputDir/${parFile}-${case}-result.txt 
 
       make clean
-      make all BENCH_FLAGS="-DNAVX2 -DNARM_NEON -UN$case"
+      make all $FLAG
 
     # start time
-      startTime=`gdate +%S%6N`;
+      startTime=`gdate +%S%3N`;
       ./sofia bench/parsets/${parFile} >> $outputDir/${parFile}-${case}-result.txt 
     #end time
-      endTime=`gdate +%S%6N`;
+      endTime=`gdate +%S%3N`;
 
       diffMicroSeconds="$(($endTime-$startTime))"
 
       echo  >> $outputDir/${parFile}-${case}-result.txt 
-      echo "Time elapsed us: $diffMicroSeconds us" >> $outputDir/${parFile}-${case}-result.txt 
+      echo "Time elapsed ms: $diffMicroSeconds ms" >> $outputDir/${parFile}-${case}-result.txt 
 
       PATTERN=`pattern $i $case`
       ((i+=1))
@@ -64,8 +72,8 @@ echo "                                            \
                                                         \
   set title \"Sofia Performance Benchmark\";                        \
   set xlabel \"Matrix Dim\";                             \
-  set ylabel \"Time elapsed (us)\";                     \
-  set yrange [0:500000];                 \
+  set ylabel \"Time elapsed (ms)\";                     \
+  set yrange [0:1000];                 \
   unset key;                                      \
   set boxwidth 0.5;                                       \
   set style fill solid;                                \

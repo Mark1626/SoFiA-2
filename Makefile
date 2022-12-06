@@ -15,14 +15,6 @@ else ifeq ($(UNAME_S),Darwin)
 	OMP += -Xpreprocessor -fopenmp -lomp
 endif
 
-processor := $(shell uname -m)
-ifeq ($(processor),$(filter $(processor),aarch64 arm64))
-    ARCH_C_FLAGS += -march=armv8-a+fp+simd+crc 
-else ifeq ($(processor),$(filter $(processor),i386 x86_64))
-    ARCH_C_FLAGS += -march=native 
-endif
-
-
 SRC = src/Array_dbl.c \
       src/Array_siz.c \
       src/Catalog.c \
@@ -54,7 +46,7 @@ TEST_OBJ = $(TEST:.c=.o)
 OPT     = --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3
 LIBS    = -lm -lwcs
 CC      = gcc
-CFLAGS += $(OPT) $(OMP) $(ARCH_C_FLAGS) $(BENCH_FLAGS)
+CFLAGS += $(OPT) $(OMP) $(ARCH) $(BENCH_FLAGS)
 
 ifdef DEBUG
 OPT     = -g -O0 -fsanitize=address

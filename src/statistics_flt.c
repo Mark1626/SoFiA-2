@@ -46,11 +46,11 @@
 #include <stdint.h>
 #include <string.h>
 
-#if !defined(NAVX2) && defined(__AVX2__)
+#ifdef __AVX2__
 #include <immintrin.h>
 #endif
 
-#if !defined(NARM_NEON) && defined(__ARM_NEON__)
+#ifdef __ARM_NEON__
 #include <arm_neon.h>
 #endif
 
@@ -1096,7 +1096,7 @@ void filter_boxcar_1d_flt(float *data, float *data_copy, const size_t size, cons
 
 
 
-#if !defined(NAVX2) && defined(__AVX2__)
+#ifdef __AVX2__
 static inline __m128 filter_nan_sse(__m128 data_v) {
 	// Filter nan
 	__m128 nan_mask = _mm_cmpord_ps(data_v, data_v);
@@ -1316,7 +1316,7 @@ void filter_gauss_2d_flt(float *data, float *data_copy, float *data_row, float *
 
 
 
-#if !defined(NAVX2) && defined(__AVX2__)
+#ifdef __AVX2__
 void filter_gauss_2d_flt_avx(float *data, __m256 *data_col_copy, float *data_copy, float *data_col, const size_t size_x, const size_t size_y, const size_t n_iter, const size_t filter_radius)
 {
 	// Set up a few variables
@@ -1375,7 +1375,7 @@ void filter_gauss_2d_flt_avx(float *data, __m256 *data_col_copy, float *data_cop
 #endif
 
 
-#if !defined(NARM_NEON) && defined(__ARM_NEON__)
+#ifdef __ARM_NEON__
 static inline float32x4_t filter_nan_neon(float32x4_t data_v) {
   // Filter nan
   uint32x4_t nan_mask = vceqq_f32(data_v, data_v);

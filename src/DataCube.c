@@ -1919,7 +1919,7 @@ PUBLIC void DataCube_boxcar_filter(DataCube *self, size_t radius)
 			// Request memory for boxcar filter to operate on
 			float  *data_box = (float *) memory(MALLOC, self->axis_size[2] + 2 * radius, sizeof(float));
 
-			#if !defined(NAVX2) && defined(__AVX2__)
+			#ifdef __AVX2__
 				__m256 *data_box_avx = _mm_malloc((self->axis_size[2] + 2 * radius) * sizeof(__m256), sizeof(__m256));
 				float *data = (float *)self->data;
 				size_t stride = self->axis_size[0] * self->axis_size[1];
@@ -1932,7 +1932,7 @@ PUBLIC void DataCube_boxcar_filter(DataCube *self, size_t radius)
 			{
 				size_t start_x = 0;
 
-				#if !defined(NAVX2) && defined(__AVX2__)
+				#ifdef __AVX2__
 					size_t width = 8;
 					size_t size_x_simd = (size_x / width) * width;
 
@@ -1961,7 +1961,7 @@ PUBLIC void DataCube_boxcar_filter(DataCube *self, size_t radius)
 			// Release memory
 			free(spectrum);
 			free(data_box);
-			#if !defined(NAVX2) && defined(__AVX2__)
+			#ifdef __AVX2__
 				_mm_free(data_box_avx);
 			#endif
 		}
@@ -2049,7 +2049,7 @@ PUBLIC void DataCube_gaussian_filter(DataCube *self, const double sigma)
 			float  *data_col = (float *)memory(MALLOC, self->axis_size[1] + 2 * filter_radius, sizeof(float));
 			// Memory for one column
 
-			#if !defined(NAVX2) && defined(__AVX2__)
+			#ifdef __AVX2__
 				__m256 *data_col_8 = _mm_malloc((self->axis_size[1] + 2 * filter_radius) * sizeof(__m256), sizeof(__m256));
 			#endif
 
@@ -2057,11 +2057,11 @@ PUBLIC void DataCube_gaussian_filter(DataCube *self, const double sigma)
 			#pragma omp for schedule(static)
 			for(char *ptr = self->data; ptr < self->data + self->data_size * self->word_size; ptr += size)
 			{
-				#if !defined(NAVX2) && defined(__AVX2__)
+#ifdef __AVX2__
 					filter_gauss_2d_flt_avx((float *)ptr, data_col_8, data_row, data_col, self->axis_size[0], self->axis_size[1], n_iter, filter_radius);
-				#elif !defined(NARM_NEON) && defined(__ARM_NEON__)
+				#elif defined(__ARM_NEON__)
 					filter_gauss_2d_neon((float *)ptr, NULL, data_row, NULL, self->axis_size[0], self->axis_size[1], n_iter, filter_radius);
-				#else
+#else	
 					filter_gauss_2d_flt((float *)ptr, column, data_row, data_col, self->axis_size[0], self->axis_size[1], n_iter, filter_radius);
 				#endif
 			}
@@ -2069,7 +2069,7 @@ PUBLIC void DataCube_gaussian_filter(DataCube *self, const double sigma)
 			// Release memory
 			free(data_row);
 			free(data_col);
-			#if !defined(NAVX2) && defined(__AVX2__)
+			#ifdef __AVX2__
 				_mm_free(data_col_8);
 			#endif
 			free(column);

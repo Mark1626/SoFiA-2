@@ -3,13 +3,14 @@
 set -e
 set -x
 
-declare -a CASES=(GOLDEN AVX2)
+declare -a CASES=(GOLDEN AVX)
 
 host=$1
 parFile=$2
 outputDir=bench/stat/$host/energy
 mkdir -p $outputDir
 
+FLAG=""
 AWK=awk
 
 function pattern() {
@@ -32,11 +33,16 @@ i=0
 rm -f $outputDir/${parFile}-stats.csv
 for case in ${CASES[@]}
 do  
+    if [ $case = "AVX" ]
+    then
+        FLAG="ARCH=-march=native"
+      fi
       rm -f $outputDir/${parFile}-${case}-result.txt
       
       echo "Running ${case}" >> $outputDir/${parFile}-${case}-result.txt 
 
-      make all BENCH_FLAGS="-DNAVX2 -UN$case"
+      make clean
+      make all $FLAG
 
       perf stat -e power/energy-pkg/ ./sofia bench/parsets/${parFile} &>> $outputDir/${parFile}-${case}-result.txt 
 
