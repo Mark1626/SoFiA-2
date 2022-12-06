@@ -48,7 +48,7 @@ do
       echo "Running ${case}" >> $outputDir/${parFile}-${case}-result.txt 
 
       make clean
-      make all $FLAG
+      make all "OMP=-Xpreprocessor -fopenmp -lomp" $FLAG
 
     # start time
       startTime=`gdate +%S%3N`;

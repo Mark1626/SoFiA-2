@@ -8,13 +8,6 @@
 #   make clean                                  remove object files after compilation
 #   make DEBUG=1                                for debug mode (no compiler optimisations)
 
-UNAME_S := $(shell uname -s)
-ifeq ($(UNAME_S),Linux)
-	OMP += -fopenmp
-else ifeq ($(UNAME_S),Darwin)
-	OMP += -Xpreprocessor -fopenmp -lomp
-endif
-
 SRC = src/Array_dbl.c \
       src/Array_siz.c \
       src/Catalog.c \
@@ -46,7 +39,7 @@ TEST_OBJ = $(TEST:.c=.o)
 OPT     = --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3
 LIBS    = -lm -lwcs
 CC      = gcc
-CFLAGS += $(OPT) $(OMP) $(ARCH) $(BENCH_FLAGS)
+CFLAGS += $(OPT) $(OMP) $(ARCH)
 
 ifdef DEBUG
 OPT     = -g -O0 -fsanitize=address

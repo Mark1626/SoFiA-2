@@ -42,7 +42,7 @@ do
       echo "Running ${case}" >> $outputDir/${parFile}-${case}-result.txt 
 
       make clean
-      make all $FLAG
+      make all "OMP=-fopenmp" $FLAG
 
       perf stat -e power/energy-pkg/ ./sofia bench/parsets/${parFile} &>> $outputDir/${parFile}-${case}-result.txt 
 
