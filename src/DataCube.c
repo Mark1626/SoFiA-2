@@ -1957,7 +1957,7 @@ PUBLIC void DataCube_boxcar_filter(DataCube *self, size_t radius)
 					for(size_t x = 0; x < size_x_simd; x += width)
 					{
 						size_t offset = y * self->axis_size[0] + x;
-						filter_simd_neon(data + offset, self->axis_size[2], stride, radius) ;
+						filter_boxcar_1d_flt_neon(data + offset, self->axis_size[2], stride, radius) ;
 					}
 					start_x = size_x_simd;
 				#endif
@@ -2077,7 +2077,7 @@ PUBLIC void DataCube_gaussian_filter(DataCube *self, const double sigma)
 				#ifdef __AVX2__
 					filter_gauss_2d_flt_avx((float *)ptr, data_col_8, data_row, data_col, self->axis_size[0], self->axis_size[1], n_iter, filter_radius);
 				#elif defined(USE_INTRINSICS) && defined(__ARM_NEON__)
-					filter_gauss_2d_neon((float *)ptr, NULL, data_row, NULL, self->axis_size[0], self->axis_size[1], n_iter, filter_radius);
+					filter_gauss_2d_flt_neon((float *)ptr, NULL, data_row, NULL, self->axis_size[0], self->axis_size[1], n_iter, filter_radius);
 				#else	
 					filter_gauss_2d_flt((float *)ptr, column, data_row, data_col, self->axis_size[0], self->axis_size[1], n_iter, filter_radius);
 				#endif

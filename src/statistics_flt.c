@@ -1384,7 +1384,7 @@ static inline float32x4_t filter_nan_neon(float32x4_t data_v) {
   return data_filtered_v;
 }
 
-void filter_simd_neon(float *data, const size_t size, const size_t stride,
+void filter_boxcar_1d_flt_neon(float *data, const size_t size, const size_t stride,
                       const size_t filter_radius) {
   const size_t filter_size = 2 * filter_radius + 1;
   size_t i;
@@ -1429,7 +1429,7 @@ void filter_simd_neon(float *data, const size_t size, const size_t stride,
   return;
 }
 
-void filter_gauss_2d_neon(float *data, float *data_copy, float *data_row,
+void filter_gauss_2d_flt_neon(float *data, float *data_copy, float *data_row,
                           float *data_col, const size_t size_x,
                           const size_t size_y, const size_t n_iter,
                           const size_t filter_radius) {
@@ -1450,7 +1450,7 @@ void filter_gauss_2d_neon(float *data, float *data_copy, float *data_row,
   for (size_t x = 0; x < limit; x += 4) {
     // Apply filter
     for (size_t i = n_iter; i--;) 
-    filter_simd_neon(data + x, size_y, size_x, filter_radius);
+    filter_boxcar_1d_flt_neon(data + x, size_y, size_x, filter_radius);
     
   }
 
