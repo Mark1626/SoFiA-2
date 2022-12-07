@@ -34,15 +34,24 @@ TEST = tests/test_LinkerPar.c
 
 TEST_OBJ = $(TEST:.c=.o)
 
-# OPENMP = -fopenmp
-# OMP     = -Xpreprocessor -fopenmp -lomp
 OPT     = --std=c99 --pedantic -Wall -Wextra -Wshadow -Wno-unknown-pragmas -Wno-unused-function -Wfatal-errors -O3
 LIBS    = -lm -lwcs
 CC      = gcc
+
+# for Linux
+# OMP = -fopenmp
+# for MacOS
+# OMP = -Xpreprocessor -fopenmp -lomp
+
+# for x86_x64
+# ARCH = -march=native
+# for arm64
+# ARCH = -march=armv8-a+fp+simd+crc -DUSE_INTRINSICS
+
 CFLAGS += $(OPT) $(OMP) $(ARCH)
 
 ifdef DEBUG
-OPT     = -g -O0 -fsanitize=address
+OPT     = -g -O0
 endif
 
 all:	sofia
