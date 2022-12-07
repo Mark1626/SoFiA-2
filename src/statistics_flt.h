@@ -143,7 +143,9 @@ void filter_gauss_2d_flt_avx(float *data, __m256 *data_copy, float *data_row,
                              const size_t filter_radius);
 #endif
 
-#ifdef __ARM_NEON__
+#if defined(USE_INTRINSICS) && defined(__ARM_NEON__)
+void filter_simd_neon(float *data, const size_t size, const size_t stride,
+                      const size_t filter_radius);
 void filter_gauss_2d_neon(float *data, float *data_copy, float *data_row,
                           float *data_col, const size_t size_x,
                           const size_t size_y, const size_t n_iter,

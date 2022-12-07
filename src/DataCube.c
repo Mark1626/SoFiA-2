@@ -1925,6 +1925,11 @@ PUBLIC void DataCube_boxcar_filter(DataCube *self, size_t radius)
 				size_t stride = self->axis_size[0] * self->axis_size[1];
 			#endif
 
+			#if defined(USE_INTRINSICS) && defined(__ARM_NEON__)
+				float *data = (float *)self->data;
+				size_t stride = self->axis_size[0] * self->axis_size[1];
+			#endif
+
 			size_t size_x = self->axis_size[0];
 
 			#pragma omp for schedule(static)
@@ -1942,6 +1947,18 @@ PUBLIC void DataCube_boxcar_filter(DataCube *self, size_t radius)
 						filter_boxcar_1d_flt_avx(data + offset, data_box_avx, self->axis_size[2], stride, radius);
 					}
 
+					start_x = size_x_simd;
+				#endif
+
+				#if defined(USE_INTRINSICS) && defined(__ARM_NEON__)
+					size_t width = 4;
+					size_t size_x_simd = (size_x / width) * width;
+
+					for(size_t x = 0; x < size_x_simd; x += width)
+					{
+						size_t offset = y * self->axis_size[0] + x;
+						filter_simd_neon(data + offset, self->axis_size[2], stride, radius) ;
+					}
 					start_x = size_x_simd;
 				#endif
 
@@ -2057,11 +2074,11 @@ PUBLIC void DataCube_gaussian_filter(DataCube *self, const double sigma)
 			#pragma omp for schedule(static)
 			for(char *ptr = self->data; ptr < self->data + self->data_size * self->word_size; ptr += size)
 			{
-#ifdef __AVX2__
+				#ifdef __AVX2__
 					filter_gauss_2d_flt_avx((float *)ptr, data_col_8, data_row, data_col, self->axis_size[0], self->axis_size[1], n_iter, filter_radius);
-				#elif defined(__ARM_NEON__)
+				#elif defined(USE_INTRINSICS) && defined(__ARM_NEON__)
 					filter_gauss_2d_neon((float *)ptr, NULL, data_row, NULL, self->axis_size[0], self->axis_size[1], n_iter, filter_radius);
-#else	
+				#else	
 					filter_gauss_2d_flt((float *)ptr, column, data_row, data_col, self->axis_size[0], self->axis_size[1], n_iter, filter_radius);
 				#endif
 			}

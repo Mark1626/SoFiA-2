@@ -50,7 +50,7 @@
 #include <immintrin.h>
 #endif
 
-#ifdef __ARM_NEON__
+#if defined(USE_INTRINSICS) && defined(__ARM_NEON__)
 #include <arm_neon.h>
 #endif
 
@@ -1375,7 +1375,7 @@ void filter_gauss_2d_flt_avx(float *data, __m256 *data_col_copy, float *data_cop
 #endif
 
 
-#ifdef __ARM_NEON__
+#if defined(USE_INTRINSICS) && defined(__ARM_NEON__)
 static inline float32x4_t filter_nan_neon(float32x4_t data_v) {
   // Filter nan
   uint32x4_t nan_mask = vceqq_f32(data_v, data_v);

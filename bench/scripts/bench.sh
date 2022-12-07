@@ -38,17 +38,17 @@ for case in ${CASES[@]}
 do  
     if [ $case = "AVX" ]
     then
-        FLAG="ARCH=-march=native"
+        FLAG="-march=native"
     elif [ $case = "NEON" ]
     then 
-        FLAG="ARCH=-march=armv8-a+fp+simd+crc"
+        FLAG="-march=armv8-a+fp+simd+crc -DUSE_INTRINSICS"
       fi
       rm -f $outputDir/${parFile}-${case}-result.txt
       
       echo "Running ${case}" >> $outputDir/${parFile}-${case}-result.txt 
 
       make clean
-      make all "OMP=-Xpreprocessor -fopenmp -lomp" $FLAG
+      make all "OMP=-Xpreprocessor -fopenmp -lomp" "ARCH=$FLAG" 
 
     # start time
       startTime=`gdate +%s%3N`;

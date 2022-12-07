@@ -3,6 +3,7 @@
 *.fits
 sofia
 unittest
+sofia_test_output*
 
 Analysis
 Docs
@@ -15,3 +16,4 @@ expected_output/
 reference_output/
 
 *.gz
+

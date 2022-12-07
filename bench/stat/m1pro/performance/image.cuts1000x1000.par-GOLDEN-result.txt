@@ -7,7 +7,7 @@ Running GOLDEN
   Using:    Source Finding Application (SoFiA)
   Version:  2.5.1 (24-Jun-2022)
   CPU:      10 threads available
-  Time:     Wed Dec  7 09:04:57 2022
+  Time:     Wed Dec  7 12:06:07 2022
 
 [36m____________________________________________________________________________[0;1m
 
@@ -34,7 +34,7 @@ Running GOLDEN
   Searching for values of infinity.
     No infinite pixel values found.
 
-[36m  Elapsed time: 00:00:01 h
+[36m  Elapsed time: 00:00:00 h
   CPU time:     00:00:00 h[0m
 
 [36m____________________________________________________________________________[0;1m
@@ -44,7 +44,7 @@ Running GOLDEN
 
   Global RMS:  3.113e-03  (using stride of 270)
 
-[36m  Elapsed time: 00:00:01 h
+[36m  Elapsed time: 00:00:00 h
   CPU time:     00:00:00 h[0m
 
 [36m____________________________________________________________________________[0;1m
@@ -65,13 +65,13 @@ Running GOLDEN
   Smoothing kernel:  [0.0] x [0]
   Noise level:       3.113e-03
 
-[36m  Elapsed time: 00:00:01 h
+[36m  Elapsed time: 00:00:00 h
   CPU time:     00:00:01 h[0m
 
   Smoothing kernel:  [0.0] x [3]
   Noise level:       1.851e-03
 
-[36m  Elapsed time: 00:00:01 h
+[36m  Elapsed time: 00:00:00 h
   CPU time:     00:00:02 h[0m
 
   Smoothing kernel:  [0.0] x [7]
@@ -83,56 +83,56 @@ Running GOLDEN
   Smoothing kernel:  [0.0] x [15]
   Noise level:       9.471e-04
 
-[36m  Elapsed time: 00:00:02 h
+[36m  Elapsed time: 00:00:01 h
   CPU time:     00:00:05 h[0m
 
   Smoothing kernel:  [5.0] x [0]
   Noise level:       1.887e-03
 
 [36m  Elapsed time: 00:00:02 h
-  CPU time:     00:00:08 h[0m
+  CPU time:     00:00:10 h[0m
 
   Smoothing kernel:  [5.0] x [3]
   Noise level:       1.136e-03
 
 [36m  Elapsed time: 00:00:03 h
-  CPU time:     00:00:12 h[0m
+  CPU time:     00:00:16 h[0m
 
   Smoothing kernel:  [5.0] x [7]
   Noise level:       7.963e-04
 
-[36m  Elapsed time: 00:00:04 h
-  CPU time:     00:00:17 h[0m
+[36m  Elapsed time: 00:00:03 h
+  CPU time:     00:00:22 h[0m
 
   Smoothing kernel:  [5.0] x [15]
   Noise level:       6.025e-04
 
 [36m  Elapsed time: 00:00:04 h
-  CPU time:     00:00:21 h[0m
+  CPU time:     00:00:27 h[0m
 
   Smoothing kernel:  [10.0] x [0]
   Noise level:       8.771e-04
 
 [36m  Elapsed time: 00:00:05 h
-  CPU time:     00:00:23 h[0m
+  CPU time:     00:00:32 h[0m
 
   Smoothing kernel:  [10.0] x [3]
   Noise level:       5.470e-04
 
-[36m  Elapsed time: 00:00:05 h
-  CPU time:     00:00:27 h[0m
+[36m  Elapsed time: 00:00:06 h
+  CPU time:     00:00:37 h[0m
 
   Smoothing kernel:  [10.0] x [7]
   Noise level:       3.970e-04
 
 [36m  Elapsed time: 00:00:06 h
-  CPU time:     00:00:31 h[0m
+  CPU time:     00:00:42 h[0m
 
   Smoothing kernel:  [10.0] x [15]
   Noise level:       3.125e-04
 
 [36m  Elapsed time: 00:00:07 h
-  CPU time:     00:00:35 h[0m
+  CPU time:     00:00:47 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -141,8 +141,8 @@ Running GOLDEN
 
   8477624 pixels detected by source finder (3.134%).
 
-[36m  Elapsed time: 00:00:07 h
-  CPU time:     00:00:39 h[0m
+[36m  Elapsed time: 00:00:08 h
+  CPU time:     00:00:53 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -161,8 +161,8 @@ Running GOLDEN
    - Memory usage:    986.56 kB
 
 
-[36m  Elapsed time: 00:00:09 h
-  CPU time:     00:00:41 h[0m
+[36m  Elapsed time: 00:00:10 h
+  CPU time:     00:00:55 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -183,7 +183,7 @@ Running GOLDEN
   1 reliable source found.
 
 [36m  Elapsed time: 00:00:10 h
-  CPU time:     00:00:44 h[0m
+  CPU time:     00:00:58 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -193,7 +193,7 @@ Running GOLDEN
   Initial source catalogue created.
 
 [36m  Elapsed time: 00:00:10 h
-  CPU time:     00:00:44 h[0m
+  CPU time:     00:00:58 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -209,7 +209,7 @@ Running GOLDEN
 
 
 [36m  Elapsed time: 00:00:10 h
-  CPU time:     00:00:44 h[0m
+  CPU time:     00:00:58 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -223,8 +223,8 @@ Running GOLDEN
   Creating FITS file: sofia_test_output_mom2.fits
   Creating FITS file: sofia_test_output_chan.fits
 
-[36m  Elapsed time: 00:00:10 h
-  CPU time:     00:00:45 h[0m
+[36m  Elapsed time: 00:00:11 h
+  CPU time:     00:00:59 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -234,8 +234,8 @@ Running GOLDEN
   Creating FITS file: sofia_test_output_mask-2d.fits
   Creating FITS file: sofia_test_output_mask.fits
 
-[36m  Elapsed time: 00:00:11 h
-  CPU time:     00:00:47 h[0m
+[36m  Elapsed time: 00:00:12 h
+  CPU time:     00:01:01 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -245,8 +245,8 @@ Running GOLDEN
   Writing ASCII file:   sofia_test_output_cat.txt
   Writing VOTable file: sofia_test_output_cat.xml
 
-[36m  Elapsed time: 00:00:11 h
-  CPU time:     00:00:47 h[0m
+[36m  Elapsed time: 00:00:12 h
+  CPU time:     00:01:01 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -254,4 +254,4 @@ Running GOLDEN
 [0;36m____________________________________________________________________________[0m
 
 
-Time elapsed ms: 11255 ms
+Time elapsed ms: 12016 ms
