@@ -7,7 +7,7 @@ Running GOLDEN
   Using:    Source Finding Application (SoFiA)
   Version:  2.5.1 (24-Jun-2022)
   CPU:      10 threads available
-  Time:     Tue Dec  6 22:25:13 2022
+  Time:     Wed Dec  7 09:04:57 2022
 
 [36m____________________________________________________________________________[0;1m
 
@@ -101,7 +101,7 @@ Running GOLDEN
   Smoothing kernel:  [5.0] x [7]
   Noise level:       7.963e-04
 
-[36m  Elapsed time: 00:00:03 h
+[36m  Elapsed time: 00:00:04 h
   CPU time:     00:00:17 h[0m
 
   Smoothing kernel:  [5.0] x [15]
@@ -114,13 +114,13 @@ Running GOLDEN
   Noise level:       8.771e-04
 
 [36m  Elapsed time: 00:00:05 h
-  CPU time:     00:00:24 h[0m
+  CPU time:     00:00:23 h[0m
 
   Smoothing kernel:  [10.0] x [3]
   Noise level:       5.470e-04
 
 [36m  Elapsed time: 00:00:05 h
-  CPU time:     00:00:28 h[0m
+  CPU time:     00:00:27 h[0m
 
   Smoothing kernel:  [10.0] x [7]
   Noise level:       3.970e-04
@@ -131,7 +131,7 @@ Running GOLDEN
   Smoothing kernel:  [10.0] x [15]
   Noise level:       3.125e-04
 
-[36m  Elapsed time: 00:00:06 h
+[36m  Elapsed time: 00:00:07 h
   CPU time:     00:00:35 h[0m
 
 [36m____________________________________________________________________________[0;1m
@@ -142,7 +142,7 @@ Running GOLDEN
   8477624 pixels detected by source finder (3.134%).
 
 [36m  Elapsed time: 00:00:07 h
-  CPU time:     00:00:41 h[0m
+  CPU time:     00:00:39 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -162,7 +162,7 @@ Running GOLDEN
 
 
 [36m  Elapsed time: 00:00:09 h
-  CPU time:     00:00:43 h[0m
+  CPU time:     00:00:41 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -183,7 +183,7 @@ Running GOLDEN
   1 reliable source found.
 
 [36m  Elapsed time: 00:00:10 h
-  CPU time:     00:00:46 h[0m
+  CPU time:     00:00:44 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -193,7 +193,7 @@ Running GOLDEN
   Initial source catalogue created.
 
 [36m  Elapsed time: 00:00:10 h
-  CPU time:     00:00:46 h[0m
+  CPU time:     00:00:44 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -209,7 +209,7 @@ Running GOLDEN
 
 
 [36m  Elapsed time: 00:00:10 h
-  CPU time:     00:00:46 h[0m
+  CPU time:     00:00:44 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -224,7 +224,7 @@ Running GOLDEN
   Creating FITS file: sofia_test_output_chan.fits
 
 [36m  Elapsed time: 00:00:10 h
-  CPU time:     00:00:47 h[0m
+  CPU time:     00:00:45 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -235,7 +235,7 @@ Running GOLDEN
   Creating FITS file: sofia_test_output_mask.fits
 
 [36m  Elapsed time: 00:00:11 h
-  CPU time:     00:00:49 h[0m
+  CPU time:     00:00:47 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -246,7 +246,7 @@ Running GOLDEN
   Writing VOTable file: sofia_test_output_cat.xml
 
 [36m  Elapsed time: 00:00:11 h
-  CPU time:     00:00:49 h[0m
+  CPU time:     00:00:47 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -254,4 +254,4 @@ Running GOLDEN
 [0;36m____________________________________________________________________________[0m
 
 
-Time elapsed ms: 11105 ms
+Time elapsed ms: 11255 ms

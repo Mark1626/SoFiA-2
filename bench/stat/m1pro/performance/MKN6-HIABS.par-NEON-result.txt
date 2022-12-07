@@ -7,7 +7,7 @@ Running NEON
   Using:    Source Finding Application (SoFiA)
   Version:  2.5.1 (24-Jun-2022)
   CPU:      10 threads available
-  Time:     Tue Dec  6 22:22:58 2022
+  Time:     Wed Dec  7 09:24:02 2022
 
 [36m____________________________________________________________________________[0;1m
 
@@ -34,7 +34,7 @@ Running NEON
   Searching for values of infinity.
     No infinite pixel values found.
 
-[36m  Elapsed time: 00:00:00 h
+[36m  Elapsed time: 00:00:01 h
   CPU time:     00:00:00 h[0m
 
 [36m____________________________________________________________________________[0;1m
@@ -44,7 +44,7 @@ Running NEON
 
   Global RMS:  4.792e-04  (using stride of 1)
 
-[36m  Elapsed time: 00:00:00 h
+[36m  Elapsed time: 00:00:01 h
   CPU time:     00:00:00 h[0m
 
 [36m____________________________________________________________________________[0;1m
@@ -65,73 +65,73 @@ Running NEON
   Smoothing kernel:  [0.0] x [0]
   Noise level:       4.792e-04
 
-[36m  Elapsed time: 00:00:00 h
+[36m  Elapsed time: 00:00:01 h
   CPU time:     00:00:00 h[0m
 
   Smoothing kernel:  [0.0] x [3]
   Noise level:       3.402e-04
 
-[36m  Elapsed time: 00:00:00 h
+[36m  Elapsed time: 00:00:01 h
   CPU time:     00:00:00 h[0m
 
   Smoothing kernel:  [0.0] x [7]
   Noise level:       2.009e-04
 
-[36m  Elapsed time: 00:00:00 h
+[36m  Elapsed time: 00:00:01 h
   CPU time:     00:00:00 h[0m
 
   Smoothing kernel:  [0.0] x [15]
   Noise level:       1.191e-04
 
-[36m  Elapsed time: 00:00:00 h
+[36m  Elapsed time: 00:00:01 h
   CPU time:     00:00:00 h[0m
 
   Smoothing kernel:  [5.0] x [0]
   Noise level:       2.659e-04
 
-[36m  Elapsed time: 00:00:00 h
+[36m  Elapsed time: 00:00:01 h
   CPU time:     00:00:00 h[0m
 
   Smoothing kernel:  [5.0] x [3]
   Noise level:       1.884e-04
 
-[36m  Elapsed time: 00:00:00 h
+[36m  Elapsed time: 00:00:01 h
   CPU time:     00:00:00 h[0m
 
   Smoothing kernel:  [5.0] x [7]
   Noise level:       1.113e-04
 
-[36m  Elapsed time: 00:00:00 h
+[36m  Elapsed time: 00:00:01 h
   CPU time:     00:00:00 h[0m
 
   Smoothing kernel:  [5.0] x [15]
   Noise level:       6.770e-05
 
-[36m  Elapsed time: 00:00:00 h
+[36m  Elapsed time: 00:00:01 h
   CPU time:     00:00:00 h[0m
 
   Smoothing kernel:  [10.0] x [0]
   Noise level:       1.534e-04
 
-[36m  Elapsed time: 00:00:00 h
+[36m  Elapsed time: 00:00:01 h
   CPU time:     00:00:00 h[0m
 
   Smoothing kernel:  [10.0] x [3]
   Noise level:       1.062e-04
 
-[36m  Elapsed time: 00:00:00 h
+[36m  Elapsed time: 00:00:01 h
   CPU time:     00:00:00 h[0m
 
   Smoothing kernel:  [10.0] x [7]
   Noise level:       6.367e-05
 
-[36m  Elapsed time: 00:00:00 h
+[36m  Elapsed time: 00:00:01 h
   CPU time:     00:00:00 h[0m
 
   Smoothing kernel:  [10.0] x [15]
   Noise level:       3.895e-05
 
-[36m  Elapsed time: 00:00:00 h
+[36m  Elapsed time: 00:00:01 h
   CPU time:     00:00:00 h[0m
 
 [36m____________________________________________________________________________[0;1m
@@ -141,7 +141,7 @@ Running NEON
 
   25272 pixels detected by source finder (5.377%).
 
-[36m  Elapsed time: 00:00:00 h
+[36m  Elapsed time: 00:00:01 h
   CPU time:     00:00:00 h[0m
 
 [36m____________________________________________________________________________[0;1m
@@ -161,7 +161,7 @@ Running NEON
    - Memory usage:    3.88 kB
 
 
-[36m  Elapsed time: 00:00:00 h
+[36m  Elapsed time: 00:00:01 h
   CPU time:     00:00:00 h[0m
 
 [36m____________________________________________________________________________[0;1m
@@ -182,7 +182,7 @@ Running NEON
   Creating postscript file: sofia_test_output_skellam.eps
   4 reliable sources found.
 
-[36m  Elapsed time: 00:00:00 h
+[36m  Elapsed time: 00:00:01 h
   CPU time:     00:00:00 h[0m
 
 [36m____________________________________________________________________________[0;1m
@@ -192,7 +192,7 @@ Running NEON
 
   Initial source catalogue created.
 
-[36m  Elapsed time: 00:00:00 h
+[36m  Elapsed time: 00:00:01 h
   CPU time:     00:00:00 h[0m
 
 [36m____________________________________________________________________________[0;1m
@@ -206,7 +206,7 @@ Running NEON
   Progress:  |[33m============                                      [0m| 25%  Progress:  |[33m=========================                         [0m| 50%  Progress:  |[33m=====================================             [0m| 75%  Progress:  |[32m==================================================[0m| 100%
 
 
-[36m  Elapsed time: 00:00:00 h
+[36m  Elapsed time: 00:00:01 h
   CPU time:     00:00:00 h[0m
 
 [36m____________________________________________________________________________[0;1m
@@ -221,7 +221,7 @@ Running NEON
   Creating FITS file: sofia_test_output_mom2.fits
   Creating FITS file: sofia_test_output_chan.fits
 
-[36m  Elapsed time: 00:00:00 h
+[36m  Elapsed time: 00:00:01 h
   CPU time:     00:00:00 h[0m
 
 [36m____________________________________________________________________________[0;1m
@@ -232,7 +232,7 @@ Running NEON
   Creating FITS file: sofia_test_output_mask-2d.fits
   Creating FITS file: sofia_test_output_mask.fits
 
-[36m  Elapsed time: 00:00:00 h
+[36m  Elapsed time: 00:00:01 h
   CPU time:     00:00:00 h[0m
 
 [36m____________________________________________________________________________[0;1m
@@ -243,7 +243,7 @@ Running NEON
   Writing ASCII file:   sofia_test_output_cat.txt
   Writing VOTable file: sofia_test_output_cat.xml
 
-[36m  Elapsed time: 00:00:00 h
+[36m  Elapsed time: 00:00:01 h
   CPU time:     00:00:00 h[0m
 
 [36m____________________________________________________________________________[0;1m
@@ -252,4 +252,4 @@ Running NEON
 [0;36m____________________________________________________________________________[0m
 
 
-Time elapsed ms: 149 ms
+Time elapsed ms: 150 ms

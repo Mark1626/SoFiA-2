@@ -7,7 +7,7 @@ Running NEON
   Using:    Source Finding Application (SoFiA)
   Version:  2.5.1 (24-Jun-2022)
   CPU:      10 threads available
-  Time:     Tue Dec  6 22:22:44 2022
+  Time:     Wed Dec  7 09:22:01 2022
 
 [36m____________________________________________________________________________[0;1m
 
@@ -34,7 +34,7 @@ Running NEON
   Searching for values of infinity.
     No infinite pixel values found.
 
-[36m  Elapsed time: 00:00:01 h
+[36m  Elapsed time: 00:00:00 h
   CPU time:     00:00:00 h[0m
 
 [36m____________________________________________________________________________[0;1m
@@ -44,7 +44,7 @@ Running NEON
 
   Global RMS:  2.610e-02  (using stride of 25)
 
-[36m  Elapsed time: 00:00:01 h
+[36m  Elapsed time: 00:00:00 h
   CPU time:     00:00:00 h[0m
 
 [36m____________________________________________________________________________[0;1m
@@ -65,7 +65,7 @@ Running NEON
   Smoothing kernel:  [0.0] x [0]
   Noise level:       2.610e-02
 
-[36m  Elapsed time: 00:00:01 h
+[36m  Elapsed time: 00:00:00 h
   CPU time:     00:00:00 h[0m
 
   Smoothing kernel:  [0.0] x [3]
@@ -84,7 +84,7 @@ Running NEON
   Noise level:       1.703e-02
 
 [36m  Elapsed time: 00:00:01 h
-  CPU time:     00:00:01 h[0m
+  CPU time:     00:00:02 h[0m
 
   Smoothing kernel:  [5.0] x [0]
   Noise level:       1.988e-02
@@ -102,7 +102,7 @@ Running NEON
   Noise level:       1.601e-02
 
 [36m  Elapsed time: 00:00:01 h
-  CPU time:     00:00:03 h[0m
+  CPU time:     00:00:04 h[0m
 
   Smoothing kernel:  [5.0] x [15]
   Noise level:       1.544e-02
@@ -119,7 +119,7 @@ Running NEON
   Smoothing kernel:  [10.0] x [3]
   Noise level:       1.364e-02
 
-[36m  Elapsed time: 00:00:02 h
+[36m  Elapsed time: 00:00:01 h
   CPU time:     00:00:06 h[0m
 
   Smoothing kernel:  [10.0] x [7]
@@ -231,4 +231,4 @@ Running NEON
 [0;36m____________________________________________________________________________[0m
 
 
-Time elapsed ms: 1633 ms
+Time elapsed ms: 1681 ms

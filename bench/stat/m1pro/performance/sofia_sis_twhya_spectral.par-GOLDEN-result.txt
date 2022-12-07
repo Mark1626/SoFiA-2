@@ -7,7 +7,7 @@ Running GOLDEN
   Using:    Source Finding Application (SoFiA)
   Version:  2.5.1 (24-Jun-2022)
   CPU:      10 threads available
-  Time:     Tue Dec  6 22:22:40 2022
+  Time:     Wed Dec  7 09:21:57 2022
 
 [36m____________________________________________________________________________[0;1m
 
@@ -119,14 +119,14 @@ Running GOLDEN
   Smoothing kernel:  [10.0] x [3]
   Noise level:       1.364e-02
 
-[36m  Elapsed time: 00:00:02 h
+[36m  Elapsed time: 00:00:01 h
   CPU time:     00:00:06 h[0m
 
   Smoothing kernel:  [10.0] x [7]
   Noise level:       1.330e-02
 
 [36m  Elapsed time: 00:00:02 h
-  CPU time:     00:00:06 h[0m
+  CPU time:     00:00:07 h[0m
 
   Smoothing kernel:  [10.0] x [15]
   Noise level:       1.304e-02
@@ -142,7 +142,7 @@ Running GOLDEN
   142862 pixels detected by source finder (0.568%).
 
 [36m  Elapsed time: 00:00:02 h
-  CPU time:     00:00:07 h[0m
+  CPU time:     00:00:08 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -162,7 +162,7 @@ Running GOLDEN
 
 
 [36m  Elapsed time: 00:00:02 h
-  CPU time:     00:00:07 h[0m
+  CPU time:     00:00:08 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -172,7 +172,7 @@ Running GOLDEN
   Initial source catalogue created.
 
 [36m  Elapsed time: 00:00:02 h
-  CPU time:     00:00:07 h[0m
+  CPU time:     00:00:08 h[0m
 
 [36m____________________________________________________________________________[0;1m
 
@@ -231,4 +231,4 @@ Running GOLDEN
 [0;36m____________________________________________________________________________[0m
 
 
-Time elapsed ms: 1861 ms
+Time elapsed ms: 1604 ms
