@@ -56,10 +56,10 @@ do
     #end time
       endTime=`gdate +%s%3N`;
 
-      diffMicroSeconds="$(($endTime-$startTime))"
+      diffMilliSeconds="$(($endTime-$startTime))"
 
       echo  >> $outputDir/${parFile}-${case}-result.txt 
-      echo "Time elapsed ms: $diffMicroSeconds ms" >> $outputDir/${parFile}-${case}-result.txt 
+      echo "Time elapsed ms: $diffMilliSeconds ms" >> $outputDir/${parFile}-${case}-result.txt 
 
       PATTERN=`pattern $i $case`
       ((i+=1))
@@ -73,7 +73,7 @@ echo "                                            \
   set title \"Sofia Performance Benchmark\";                        \
   set xlabel \"Matrix Dim\";                             \
   set ylabel \"Time elapsed (ms)\";                     \
-  set yrange [0:1000];                 \
+  set yrange [0:100000];                 \
   unset key;                                      \
   set boxwidth 0.5;                                       \
   set style fill solid;                                \
